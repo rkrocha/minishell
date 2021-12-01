@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 13:51:18 by dpiza             #+#    #+#             */
-/*   Updated: 2021/11/30 21:31:32 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/11/30 21:47:46 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <string.h>
-#include <bsd/bsd.h>
 
 void	check_file_access(const char *folder, const char *ent_name, int *ent_access)
 {
@@ -39,7 +38,7 @@ void	print_access(int *ent_access, int d_type, char *d_name)
 	char	w;
 	char	x;
 
-	if (strnstr(d_name, "..", 3) || strnstr(d_name, ".", 2) || ent_access[3])
+	if (!strncmp(d_name, "..", 3) || !strncmp(d_name, ".", 2) || ent_access[3])
 		return ;
 	r = '-';
 	w = '-';
@@ -75,5 +74,3 @@ int	main(int c, char **v)
 	closedir(diretorio); // fecha a pasta pra não dar leak
 	return (0);
 }
-
-/* compilar usando -lbsd */
