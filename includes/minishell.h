@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/02 15:32:42 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/03 15:01:09 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define ENV_SIZE	256
+
 # define TYPE_EXECVE		0
 # define TYPE_MINI_CD		1
 # define TYPE_MINI_ECHO		2
@@ -26,6 +28,9 @@
 # define TYPE_MINI_EXPORT	5
 # define TYPE_MINI_PWD		6
 # define TYPE_MINI_UNSET	7
+
+# define PIPE_SEP	29
+# define CMD_SEP	31
 
 /*
 ** type: the type of this cmd (bash builtin, minishell env, minishell cd...)
@@ -54,9 +59,15 @@ typedef struct s_shell
 	int		last_return;
 }	t_shell;
 
+int		env_len(t_shell *minishell);
+void	init_env(t_shell *minishell, const char **envp);
+int		search_env(t_shell *minishell, const char *var);
+void	free_env(char ***str_array);
 
-void	msh_env(t_shell *minishell, t_cmd *cmd);
-void	msh_exit(t_shell *minishell, t_cmd *cmd);
+int		msh_env(t_shell *minishell, t_cmd *cmd);
+int		msh_exit(t_shell *minishell, t_cmd *cmd);
+int		msh_export(t_shell *minishell, t_cmd *cmd);
+int		msh_unset(t_shell *minishell, t_cmd *cmd);
 
 
 void	cmd_parser(t_shell *minishell, char *cmd);

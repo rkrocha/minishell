@@ -28,8 +28,11 @@ SRCS = 				minishell.c \
 					parser.c \
 					router.c \
 					utils.c \
+					env_manager.c \
 					builtin_env.c \
-					builtin_exit.c
+					builtin_exit.c \
+					builtin_export.c \
+					builtin_unset.c
 
 OBJS 			= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))
 
