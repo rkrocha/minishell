@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/03 14:07:50 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/04 11:20:47 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,31 @@ static void	cmd_pipe_parser(char *cmd_line)
 
 void	cmd_parser(t_shell *minishell, char *cmd_line)
 {
+	char	**cmds_split_by_pipe;
 	t_cmd	*new_cmd;
+	int		i;
 
-	new_cmd = malloc(sizeof(t_cmd));
-	ft_bzero(new_cmd, sizeof(t_cmd));
 	cmd_pipe_parser(cmd_line);
 	cmd_space_parser(cmd_line);
-	printf("%s\n", cmd_line);
-	new_cmd->cmd_v = ft_split(cmd_line, ' ');
-	define_type(new_cmd);
-	ft_lstadd_back(&minishell->cmd_list, ft_lstnew(new_cmd));
+	cmds_split_by_pipe = ft_split(cmd_line, PIPE_SEP);
+	i = 0;
+	while (cmds_split_by_pipe[i])
+	{
+		new_cmd = malloc(sizeof(t_cmd));
+		ft_bzero(new_cmd, sizeof(t_cmd));
+		new_cmd->cmd_v = ft_split(cmds_split_by_pipe[i], CMD_SEP);
+		define_type(new_cmd);
+		ft_lstadd_back(&minishell->cmd_list, ft_lstnew(new_cmd));
+		i++;
 
+
+		int j = 0;
+		while (new_cmd->cmd_v[j])
+		{
+			printf("%s // ", new_cmd->cmd_v[j]);
+			j++;
+		}
+		printf("\n");
+	}
+	ft_split_free(&cmds_split_by_pipe);
 }
