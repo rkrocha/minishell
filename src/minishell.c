@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/03 15:01:11 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/06 11:22:18 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int	main(int argc, const char **argv, const char **envp)
 		free(cmd_line);
 	}
 	rl_clear_history();
-	free_env(&minishell.env);
+	ft_split_free(&minishell.env);
 	return (minishell.last_return);
 }

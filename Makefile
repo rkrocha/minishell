@@ -6,7 +6,7 @@
 #    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/04 10:24:58 by rkochhan         ###   ########.fr        #
+#    Updated: 2021/12/06 10:21:12 by rkochhan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ INCLUDES 		= $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
 
 SRCS = 				minishell.c \
 					parser.c \
+					parser_utils.c \
 					router.c \
 					utils.c \
 					env_manager.c \

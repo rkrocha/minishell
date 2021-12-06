@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/03 15:01:09 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/06 11:22:36 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,11 @@ typedef struct s_shell
 	int		last_return;
 }	t_shell;
 
-int		env_len(t_shell *minishell);
 void	init_env(t_shell *minishell, const char **envp);
 int		search_env(t_shell *minishell, const char *var);
-void	free_env(char ***str_array);
+int		env_len(t_shell *minishell);
+
+
 
 int		msh_env(t_shell *minishell, t_cmd *cmd);
 int		msh_exit(t_shell *minishell, t_cmd *cmd);
@@ -72,6 +73,7 @@ int		msh_unset(t_shell *minishell, t_cmd *cmd);
 
 void	cmd_parser(t_shell *minishell, char *cmd);
 void	cmd_router(t_shell *minishell);
+void	cmd_var_parser(t_shell *minishell, t_cmd *cmd);
 
 
 void	del_cmd(void *elem);

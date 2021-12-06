@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:55:10 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/03 15:00:40 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/06 12:21:11 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,6 @@ int		search_env(t_shell *minishell, const char *var)
 	}
 	free(var_join);
 	return (-1);
-}
-
-void	free_env(char ***str_array)
-{
-	int	i;
-
-	i = 0;
-	while (i < ENV_SIZE) // é necessário iterar em tudo?
-	{
-		if ((*str_array)[i])
-			ft_strdel(&((*str_array)[i]));
-		i++;
-	}
-	free(*str_array);
-	*str_array = NULL;
 }
 
 void	init_env(t_shell *minishell, const char **envp)
