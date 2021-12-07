@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/06 10:21:12 by rkochhan         ###   ########.fr        #
+#    Updated: 2021/12/07 18:53:46 by dpiza            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ SRCS = 				minishell.c \
 					builtin_env.c \
 					builtin_exit.c \
 					builtin_export.c \
-					builtin_unset.c
+					builtin_unset.c \
+					ft_strjoin_free.c
 
 OBJS 			= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))
 
