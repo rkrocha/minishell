@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:55:10 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/07 11:02:09 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/07 18:23:16 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_env(t_shell *minishell, const char *var)
 		}
 	}
 	free(var_join);
-	return (NULL);
+	return (ft_strdup(""));
 }
 
 int		env_len(t_shell *minishell)
