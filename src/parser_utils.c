@@ -25,21 +25,22 @@ static t_bool	is_inquotes(char *str, char *expansion)
 	int		d_quote;
 	int		i;
 
-	quote = -1;
-	d_quote = -1;
+	quote = 0;
+	d_quote = 0;
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '\'' && quote == -1)
-			quote = i;
-		else if (str[i] == '\'' && quote > -1)
-			quote = -1;
-		if (str[i] == '\"' && d_quote == -1)
-			d_quote = i;
-		else if ((str[i] == '\"' && d_quote > -1))
-			d_quote = -1;
-		if (str + i == expansion && quote > -1			// se está verificando o indice do '$' e existe uma áspa simples aberta
-			&& (!(d_quote > -1 && quote > d_quote)))	// not: se existir uma aspa dupla aberta e estiver antes da simples
+		if (str[i] == '\'' && quote <= 0)
+			quote = i + 1;
+		else if (str[i] == '\'' && quote > 0)
+			quote = (i + 1) * -1;
+		if (str[i] == '\"' && d_quote <= 0)
+			d_quote = i + 1;
+		else if ((str[i] == '\"' && d_quote > 0))
+			d_quote = (i + 1) * -1;
+		if (str + i == expansion && quote > 0			// se está verificando o indice do '$' e existe uma áspa simples aberta
+		&& (!(d_quote > 0 && quote > d_quote))			// not: se existir uma aspa dupla aberta e estiver antes da simples
+		&& (!(d_quote < 0 && quote < -d_quote)))		// not: aspas simples aberta entre áspas duplas
 			return (TRUE);
 	}
 	return (FALSE);
