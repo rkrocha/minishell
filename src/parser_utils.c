@@ -12,110 +12,96 @@
 
 #include "minishell.h"
 
-// static t_bool	is_var_name(char c)
-// {
-// 	if (ft_isalnum(c) || c == '_')
-// 		return (TRUE);
-// 	return (FALSE);
-// }
-
-// static int	var_expand(char *str, int i, char **new_str)
-// {
-// 	int		j;
-// 	char	*expansion_name;
-
-// 	(void)new_str;
-// 	i++;
-// 	j = 0;
-// 	while (str[i + j])
-// 	{
-// 		if (!is_var_name(str[i + j]))
-// 			break ;
-// 		j++;
-// 	}
-// 	expansion_name = ft_substr(str, i, j);
-// 	printf("%s\n", expansion_name);
-// 	free(expansion_name);
-// 	return (j);
-// }
-
-// static char	*single_cmd_parser(char *str)
-// {
-// 	int		i;
-// 	char	quote;
-// 	char	*new_str;
-
-// 	i = 0;
-// 	quote = '\0';
-// 	new_str = NULL;
-// 	while (str[i])
-// 	{
-// 		if (quote == '\0' && str[i] == '\'')
-// 			quote = str[i];
-// 		else if (quote == '\'' && str[i] == '\'')
-// 			quote = '\0';
-// 		if (quote == '\0' && str[i] == '$')
-// 			i += var_expand(str, i, &new_str);
-// 		else
-// 			i += cat_literal(str, i, &new_str);
-// 		i++;
-// 	}
-// 	return ("abc");
-// }
+static t_bool	is_var_name(char c)
+{
+	if (ft_isalnum(c) || c == '_')
+		return (TRUE);
+	return (FALSE);
+}
 
 static t_bool	is_inquotes(char *str, char *expansion)
 {
-	char	*quote_open;
-	char	*quote_close;
+	int		quote;
+	int		d_quote;
+	int		i;
 
-	quote_open = str;
-	while (quote_open)
+	quote = -1;
+	d_quote = -1;
+	i = -1;
+	while (str[++i])
 	{
-		quote_open = ft_strchr(quote_open, '\'');
-		if (!quote_open)
-			return (FALSE);
-		quote_close = ft_strchr(++quote_open, '\'');
-		if (!quote_close || (quote_open < expansion && quote_close > expansion))
+		if (str[i] == '\'' && quote == -1)
+			quote = i;
+		else if (str[i] == '\'' && quote > -1)
+			quote = -1;
+		if (str[i] == '\"' && d_quote == -1)
+			d_quote = i;
+		else if ((str[i] == '\"' && d_quote > -1))
+			d_quote = -1;
+		if (str + i == expansion && quote > -1			// se está verificando o indice do '$' e existe uma áspa simples aberta
+			&& (!(d_quote > -1 && quote > d_quote)))	// not: se existir uma aspa dupla aberta e estiver antes da simples
 			return (TRUE);
-		quote_open = quote_close++;
 	}
 	return (FALSE);
 }
 
-static char	*single_cmd_parser(char	*str)
-{
-	char	*expansion;
-	char	*tracker;
-	char	*new_str;
-
-	new_str = NULL;
-	if (!ft_strchr(str, '$'));
-		return (new_str);
-	expansion = str;
-	tracker = str;
-	while (1)
-	{
-		expansion = ft_strchr(expansion, '$');
-
-
-	}
-}
-
-void	cmd_var_parser(t_shell *minishell, t_cmd *cmd)
+static char	**var_expand(t_shell *minishell, char *str)
 {
 	int		i;
-	// int		start_index;
-	char	*cmd_expanded;
+	char	**expansion;
 
-	(void)minishell;
-	i = -1;
-
-	while(cmd->cmd_v[++i])
+	i = 0;
+	while (str[++i])
 	{
-		cmd_expanded = single_cmd_parser(cmd->cmd_v[i]);
-		if (!cmd_expanded)
-			continue ;
-		free(cmd->cmd_v[i]);
-		cmd->cmd_v[i] = cmd_expanded;
+		if (!is_var_name(str[i]))
+			break ;
 	}
+	expansion = malloc(3 * sizeof(char *));
+	expansion[2] = NULL;
+	expansion[1] = ft_substr(str, 0, i);				 // grava o nome da variável ex: $HOME
+	if (i == 1)
+		expansion[0] = ft_substr(str, 0, i);
+	else
+		expansion[0] = get_env(minishell, expansion[1] + 1); // retorna o conteúdo da variável ex: /home/admin
+	return (expansion);
+}
+
+char	*copy_middle(char **str, char *tracker, int size)
+{
+	char	*temp;
+
+	temp = ft_substr(tracker, 0, size);
+	*str = ft_strjoin_free(str, temp);
+	free (temp);
+	return (*str);
+}
+
+char	*single_cmd_parser(t_shell *minishell, char	*str)
+{
+	char	*new_str;
+	char	*expansion;
+	char	*tracker;
+	char	**content;
+
+	if (!ft_strchr(str, '$'))
+		return (NULL);
+	new_str = ft_strdup("");
+	expansion = str;
+	while (expansion)
+	{
+		tracker = expansion;
+		expansion = ft_strchr(expansion, '$');
+		if (!expansion)
+		{
+			new_str = ft_strjoin_free(&new_str, tracker);
+			break ;
+		}
+		if (expansion != tracker)
+			new_str = copy_middle(&new_str, tracker, expansion - tracker);
+		content = var_expand(minishell, expansion);
+		new_str = ft_strjoin_free(&new_str, content[(int)is_inquotes(str, expansion)]);
+		expansion += ft_strlen(content[1]);
+		ft_split_free(&content);
+	}
+	return (new_str);
 }

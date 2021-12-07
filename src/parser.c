@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/06 10:24:15 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/07 19:01:52 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	cmd_space_parser(char *cmd_line)
 
 	i = 0;
 	quote = '\0';
-	while(cmd_line[i])
+	while (cmd_line[i])
 	{
 		if (quote == '\0' && (cmd_line[i] == '\'' || cmd_line[i] == '\"'))
 			quote = cmd_line[i];
@@ -58,7 +58,7 @@ static void	cmd_pipe_parser(char *cmd_line)
 
 	i = 0;
 	quote = '\0';
-	while(cmd_line[i])
+	while (cmd_line[i])
 	{
 		if (quote == '\0' && (cmd_line[i] == '\'' || cmd_line[i] == '\"'))
 			quote = cmd_line[i];
@@ -67,6 +67,25 @@ static void	cmd_pipe_parser(char *cmd_line)
 		if (quote == '\0' && cmd_line[i] == '|')
 			cmd_line[i] = PIPE_SEP;
 		i++;
+	}
+}
+
+void	cmd_var_parser(t_shell *minishell, t_cmd *cmd)
+{
+	int		i;
+	char	*cmd_expanded;
+
+	(void)minishell;
+	i = -1;
+	while (cmd->cmd_v[++i])
+	{
+		printf("ORIGINAL_CMD: %s\n", cmd->cmd_v[i]);
+		cmd_expanded = single_cmd_parser(minishell, cmd->cmd_v[i]);
+		if (!cmd_expanded)
+			continue ;
+		free(cmd->cmd_v[i]);
+		cmd->cmd_v[i] = cmd_expanded;
+		printf("EXPANDED_CMD: %s\n", cmd->cmd_v[i]);
 	}
 }
 

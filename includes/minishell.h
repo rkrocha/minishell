@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/07 11:01:17 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/07 18:54:31 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,13 @@ void	cmd_parser(t_shell *minishell, char *cmd);
 void	cmd_router(t_shell *minishell);
 void	cmd_var_parser(t_shell *minishell, t_cmd *cmd);
 
+char	*single_cmd_parser(t_shell *minishell, char	*str);
+
+
 
 void	del_cmd(void *elem);
 t_cmd	*get_cmd(void *elem);
+
+char	*ft_strjoin_free(char **s1, char const *s2);
 
 #endif
