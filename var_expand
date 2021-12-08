@@ -1,4 +1,18 @@
 
+"'$HOME'"
+'/home/rafa'
+OK
+
+"'"$HOME"'"
+'/home/rafa'
+OK
+
+
+'""$HOME'
+""$HOME
+'""/home/rafa' KO
+
+
 Expansão de Schroedinger: expandir cada cifrão e depois decidir se usa a expansão ou não
 
 Guardar original e cifrão em uma matriz
