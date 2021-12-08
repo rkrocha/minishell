@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/08 11:25:39 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/08 14:24:56 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ void	cmd_var_parser(t_shell *minishell, t_cmd *cmd)
 	i = -1;
 	while (cmd->cmd_v[++i])
 	{
-		printf("ORIGINAL_CMD: %s\n", cmd->cmd_v[i]);
+		// printf("ORIGINAL_CMD: %s\n", cmd->cmd_v[i]);
 		cmd_expanded = single_cmd_parser(minishell, cmd->cmd_v[i]);
 		if (!cmd_expanded)
 			continue ;
 		free(cmd->cmd_v[i]);
 		cmd->cmd_v[i] = cmd_expanded;
-		printf("EXPANDED_CMD: %s\n", cmd->cmd_v[i]);
+		// printf("EXPANDED_CMD: %s\n", cmd->cmd_v[i]);
 	}
 }
 

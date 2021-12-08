@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 10:20:40 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/08 11:46:49 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/08 14:13:18 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*copy_middle(char **str, char *tracker, int size)
 
 	temp = ft_substr(tracker, 0, size);
 	*str = ft_strjoin_free(str, temp);
-	free (temp);
+	free(temp);
 	return (*str);
 }
 

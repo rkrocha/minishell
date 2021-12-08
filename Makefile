@@ -6,7 +6,7 @@
 #    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/08 11:22:40 by rkochhan         ###   ########.fr        #
+#    Updated: 2021/12/08 13:59:43 by rkochhan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,10 +43,12 @@ SRCS = 				minishell.c \
 					router.c \
 					utils.c \
 					env_manager.c \
+					builtin_echo.c \
 					builtin_env.c \
 					builtin_exit.c \
 					builtin_export.c \
 					builtin_unset.c \
+					builtin_cd.c \
 					ft_strjoin_free.c
 
 OBJS 			= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))

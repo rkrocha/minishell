@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 14:18:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/03 15:00:36 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/08 14:24:02 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	msh_export(t_shell *minishell, t_cmd *cmd) // pode aceitar vários args
 	var_actual = var_last;
 	if (var_pos > -1)
 		var_actual = var_pos;
-	if (var_actual >= ENV_SIZE)
+	if (var_actual >= ENV_SIZE) /// imprimir erro?
 		return (-1);
 	if (var_actual == var_pos)
 		free(minishell->env[var_actual]);
