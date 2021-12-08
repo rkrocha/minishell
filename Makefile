@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/08 13:59:43 by rkochhan         ###   ########.fr        #
+#    Updated: 2021/12/08 16:30:49 by dpiza            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRCS = 				minishell.c \
 					builtin_export.c \
 					builtin_unset.c \
 					builtin_cd.c \
+					builtin_pwd.c \
 					ft_strjoin_free.c
 
 OBJS 			= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))
@@ -67,9 +68,9 @@ bonus: 			all
 $(LIBFT):
 				@make -C $(LIBFT_DIR) --no-print-directory
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(INCLUDES_DIR) $(INCLUDES)
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c $(INCLUDES)
 				@mkdir -p $(OBJS_DIR)
-				@$(CC) $(CFLAGS) -I $(INCLUDES_DIR) -c $< -o $@ $(IFLAGS)
+				@$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 .PHONY:			all bonus
 
