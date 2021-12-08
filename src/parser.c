@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/07 19:01:52 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/08 11:25:39 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	cmd_parser(t_shell *minishell, char *cmd_line)
 		ft_bzero(new_cmd, sizeof(t_cmd));
 		new_cmd->cmd_v = ft_split(cmds_split_by_pipe[i], CMD_SEP);
 		cmd_var_parser(minishell, new_cmd);
+		cmd_quotes_parser(new_cmd);
 		define_type(new_cmd);
 		ft_lstadd_back(&minishell->cmd_list, ft_lstnew(new_cmd));
 		i++;
