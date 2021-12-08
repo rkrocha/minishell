@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/08 12:58:32 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/08 19:32:35 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	get_prompt(t_shell *minishell)
+{
+	char	*user;
+	char	*host;
+	char	*pwd;
+	char	*dir;
+	char	*home;
+
+	user = get_env(minishell, "LOGNAME");
+	host = get_env(minishell, "NAME");
+	pwd = get_env(minishell, "PWD");
+	home = get_env(minishell, "HOME");
+	if (ft_strncmp(pwd, home, ft_strlen(home) + 1) == 0)
+		dir = ft_strdup("~");
+	else if(ft_strncmp(pwd, "/", 2) == 0)
+		dir = ft_strdup("/");
+	else
+		dir = ft_strjoin("", ft_strrchr(pwd, '/') + 1);
+	printf("[\e[34m%s@%s\e[00m \e[36m%s\e[00m]", user, host, dir);
+	free(user);
+	free(host);
+	free(pwd);
+	free(home);
+	free(dir);
+}
 
 int	main(int argc, const char **argv, const char **envp)
 {
@@ -24,6 +50,7 @@ int	main(int argc, const char **argv, const char **envp)
 	init_env(&minishell, envp);
 	while (!minishell.end)
 	{
+		get_prompt(&minishell);
 		cmd_line = readline("\e[32m$\e[00m ");
 		if (!cmd_line || !*cmd_line)
 		{
