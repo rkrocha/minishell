@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 13:27:02 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/08 19:52:36 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/08 20:57:38 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,39 @@ static void	update_env_pwd(t_shell *minishell)
 	del_cmd(update_old_pwd);
 }
 
+static char	*expand_home(t_shell *minishell, char *cmd)
+{
+	char	*path;
+	char	*folder;
+	char	*full_path;
+
+	if (ft_strncmp(cmd, "~", 2) == 0)
+		return (get_env(minishell, "HOME"));
+	path = get_env(minishell, "HOME");
+	folder = ft_substr(cmd, 1, ft_strlen(cmd));
+	full_path = ft_strjoin_free(&path, folder);
+	free (folder);
+	return (full_path);
+}
+
 int	msh_cd(t_shell *minishell, t_cmd *cmd)
 {
 	char	*destiny;
 
-	if (ft_strncmp(cmd->cmd_v[1], "~", 2) == 0)
-		destiny = get_env(minishell, "HOME");
+	if (ft_strncmp(cmd->cmd_v[1], "~", 1) == 0)
+		destiny = expand_home(minishell, cmd->cmd_v[1]);
 	else if (ft_strncmp(cmd->cmd_v[1], "-", 2) == 0)
 		destiny = get_env(minishell, "OLDPWD");
 	else
 		destiny = ft_strdup(cmd->cmd_v[1]);
 	cmd->return_value = chdir(destiny);
 	if (cmd->return_value)
-		perror(strerror(errno));
+	{
+		ft_putstr("minishell: cd: ");
+		ft_putstr(destiny);
+		ft_putstr(": ");
+		ft_putendl(strerror(errno));
+	}
 	else
 		update_env_pwd(minishell);
 	free(destiny);
