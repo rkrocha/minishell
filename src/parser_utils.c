@@ -38,9 +38,9 @@ static t_bool	is_inquotes(char *str, char *expansion)
 			d_quote = i + 1;
 		else if ((str[i] == '\"' && d_quote > 0))
 			d_quote = (i + 1) * -1;
-		if (str + i == expansion && quote > 0			// se está verificando o indice do '$' e existe uma áspa simples aberta
-		&& (!(d_quote > 0 && quote > d_quote))			// not: se existir uma aspa dupla aberta e estiver antes da simples
-		&& (!(d_quote < 0 && quote < -d_quote)))		// not: aspas simples aberta entre áspas duplas
+		if (str + i == expansion && quote > 0			// se está verificando o indice do '$' && existe uma áspa simples aberta
+		&& (!(d_quote > 0 && quote > d_quote))			// not: se existir uma aspa dupla aberta && estiver antes da simples
+		&& (!(d_quote < 0 && quote < -d_quote)))		// not: se existir uma aspa dupla fechada && estiver depois da simples
 			return (TRUE);
 	}
 	return (FALSE);
@@ -58,9 +58,9 @@ static char	**var_expand(t_shell *minishell, char *str)
 			break ;
 	}
 	expansion = malloc(3 * sizeof(char *));
-	expansion[2] = NULL;
-	expansion[1] = ft_substr(str, 0, i);				 // grava o nome da variável ex: $HOME
-	if (i == 1)
+	expansion[2] = NULL;								// pra poder usar a ft_split_free
+	expansion[1] = ft_substr(str, 0, i);				// grava o nome da variável ex: $HOME
+	if (i == 1)											// caso a str seja somente um '$'
 		expansion[0] = ft_substr(str, 0, i);
 	else
 		expansion[0] = get_env(minishell, expansion[1] + 1); // retorna o conteúdo da variável ex: /home/admin
