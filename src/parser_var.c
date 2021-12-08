@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 10:20:40 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/08 11:16:06 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/08 11:46:49 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static t_bool	is_var_name(char c)
 
 static t_bool	is_inquotes(char *str, char *expansion)
 {
-	int		quote[2];
-	int		d_quote[2];
+	int		quote[3];
+	int		d_quote[3];
 	int		i;
 
 	ft_bzero(quote, sizeof(quote));
@@ -30,17 +30,29 @@ static t_bool	is_inquotes(char *str, char *expansion)
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '\'' && quote[0] == 0)
+		if (str[i] == '\'' && quote[2] == 0)
+		{
 			quote[0] = i + 1;
-		else if (str[i] == '\'' && quote[0] > 0)
+			quote[2] = 1;
+		}
+		else if (str[i] == '\'' && quote[2] > 0)
+		{
 			quote[1] = i + 1;
-		if (str[i] == '\"' && d_quote[0] == 0)
+			quote[2] = 0;
+		}
+		if (str[i] == '\"' && d_quote[2] == 0)
+		{
 			d_quote[0] = i + 1;
-		else if ((str[i] == '\"' && d_quote[0] > 0))
+			d_quote[2] = 1;
+		}
+		else if ((str[i] == '\"' && d_quote[2] > 0))
+		{
 			d_quote[1] = i + 1;
-		if (str + i == expansion && quote[0] > 0			// se está verificando o indice do '$' && existe uma áspa simples aberta
-		&& (!(d_quote[0] > 0 && quote[0] > d_quote[0]))			// not: se existir uma aspa dupla aberta && estiver antes da simples
-		&& (!(d_quote[1] > 0 && quote[0] > d_quote[0])))		// not: se existir uma aspa dupla fechada && estiver depois da simples
+			d_quote[2] = 0;
+		}
+		if (str + i == expansion && quote[2] > 0			// se está verificando o indice do '$' && existe uma áspa simples aberta
+		&& (!(d_quote[2] > 0 && quote[0] > d_quote[0]))			// not: se existir uma aspa dupla aberta && estiver antes da simples
+		&& (!(d_quote[2] == 0 && quote[0] > d_quote[0] && quote[0] < d_quote[1])))		// not: se existir uma aspa dupla fechada && estiver depois da simples
 			return (TRUE);
 	}
 	return (FALSE);
