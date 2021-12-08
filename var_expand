@@ -1,0 +1,54 @@
+
+Expansão de Schroedinger: expandir cada cifrão e depois decidir se usa a expansão ou não
+
+Guardar original e cifrão em uma matriz
+
+
+$MAIL
+/var/spool/mail/rafa
+
+'$MAIL'
+$MAIL
+
+$MAIL$MAIL
+/var/spool/mail/rafa/var/spool/mail/rafa
+
+abc"123"
+abc123
+
+abc'123'
+abc123
+
+'abc'123
+abc123
+
+"abc"123
+abc123
+
+"abc"'123'
+abc123
+
+"abc"$MAIL
+abc/var/spool/mail/rafa
+
+"abc"'$MAIL'
+abc$MAIL
+
+abc"$MAIL"
+abc/var/spool/mail/rafa
+
+'abc"$MAIL"'
+abc"$MAIL"
+
+"'$MAIL'"
+'/var/spool/mail/rafa'
+
+
+echo $
+$
+
+echo 123@'$HOME'@123@'"$HOME"'@123@$HOME@123@"'$HOME'"@123@"$HOME"@123
+123@$HOME@123@"$HOME"@123@/home/admin@123@'/home/admin'@123@/home/admin@123
+
+echo $$
+<pid do shell>
