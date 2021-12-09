@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/08 19:32:35 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/09 15:28:34 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	get_prompt(t_shell *minishell)
 	home = get_env(minishell, "HOME");
 	if (ft_strncmp(pwd, home, ft_strlen(home) + 1) == 0)
 		dir = ft_strdup("~");
-	else if(ft_strncmp(pwd, "/", 2) == 0)
+	else if (ft_strncmp(pwd, "/", 2) == 0)
 		dir = ft_strdup("/");
 	else
 		dir = ft_strjoin("", ft_strrchr(pwd, '/') + 1);
@@ -57,8 +57,8 @@ int	main(int argc, const char **argv, const char **envp)
 			free(cmd_line);
 			continue ;
 		}
-		add_history(cmd_line);				// chama o parser
-		cmd_parser(&minishell, cmd_line);	// executar comandos
+		add_history(cmd_line);
+		cmd_parser(&minishell, cmd_line);
 		cmd_router(&minishell);
 		ft_lstclear(&minishell.cmd_list, del_cmd);
 		free(cmd_line);
@@ -66,5 +66,6 @@ int	main(int argc, const char **argv, const char **envp)
 	printf("%i\n", minishell.last_return);
 	rl_clear_history();
 	ft_split_free(&minishell.env);
+	free(minishell.pwd);
 	return (minishell.last_return);
 }

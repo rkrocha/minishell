@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/08 14:24:56 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/09 10:33:59 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 static void	define_type(t_cmd *new_cmd)
 {
-	if (!ft_strncmp(new_cmd->cmd_v[0], "cd", 3))
+	if (!ft_strncmp(new_cmd->argv[0], "cd", 3))
 		new_cmd->type = TYPE_MINI_CD;
-	else if (!ft_strncmp(new_cmd->cmd_v[0], "echo", 5))
+	else if (!ft_strncmp(new_cmd->argv[0], "echo", 5))
 		new_cmd->type = TYPE_MINI_ECHO;
-	else if (!ft_strncmp(new_cmd->cmd_v[0], "env", 4))
+	else if (!ft_strncmp(new_cmd->argv[0], "env", 4))
 		new_cmd->type = TYPE_MINI_ENV;
-	else if (!ft_strncmp(new_cmd->cmd_v[0], "exit", 5))
+	else if (!ft_strncmp(new_cmd->argv[0], "exit", 5))
 		new_cmd->type = TYPE_MINI_EXIT;
-	else if (!ft_strncmp(new_cmd->cmd_v[0], "export", 7))
+	else if (!ft_strncmp(new_cmd->argv[0], "export", 7))
 		new_cmd->type = TYPE_MINI_EXPORT;
-	else if (!ft_strncmp(new_cmd->cmd_v[0], "pwd", 4))
+	else if (!ft_strncmp(new_cmd->argv[0], "pwd", 4))
 		new_cmd->type = TYPE_MINI_PWD;
-	else if (!ft_strncmp(new_cmd->cmd_v[0], "unset", 6))
+	else if (!ft_strncmp(new_cmd->argv[0], "unset", 6))
 		new_cmd->type = TYPE_MINI_UNSET;
 	else
 		new_cmd->type = TYPE_EXECVE;
@@ -77,15 +77,16 @@ void	cmd_var_parser(t_shell *minishell, t_cmd *cmd)
 
 	(void)minishell;
 	i = -1;
-	while (cmd->cmd_v[++i])
+	while (cmd->argv[++i])
 	{
-		// printf("ORIGINAL_CMD: %s\n", cmd->cmd_v[i]);
-		cmd_expanded = single_cmd_parser(minishell, cmd->cmd_v[i]);
+		cmd->argc = i + 1;
+		// printf("ORIGINAL_CMD: %s\n", cmd->argv[i]);
+		cmd_expanded = single_cmd_parser(minishell, cmd->argv[i]);
 		if (!cmd_expanded)
 			continue ;
-		free(cmd->cmd_v[i]);
-		cmd->cmd_v[i] = cmd_expanded;
-		// printf("EXPANDED_CMD: %s\n", cmd->cmd_v[i]);
+		free(cmd->argv[i]);
+		cmd->argv[i] = cmd_expanded;
+		// printf("EXPANDED_CMD: %s\n", cmd->argv[i]);
 	}
 }
 
@@ -103,7 +104,7 @@ void	cmd_parser(t_shell *minishell, char *cmd_line)
 	{
 		new_cmd = malloc(sizeof(t_cmd));
 		ft_bzero(new_cmd, sizeof(t_cmd));
-		new_cmd->cmd_v = ft_split(cmds_split_by_pipe[i], CMD_SEP);
+		new_cmd->argv = ft_split(cmds_split_by_pipe[i], CMD_SEP);
 		cmd_var_parser(minishell, new_cmd);
 		cmd_quotes_parser(new_cmd);
 		define_type(new_cmd);

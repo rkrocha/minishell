@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 13:26:38 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/08 14:24:49 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/09 10:32:13 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ int	msh_echo(t_shell *minishell, t_cmd *cmd)
 	(void)minishell;
 	i = 1;
 	print_newline = TRUE;
-	if (cmd->cmd_v[1] && !ft_strncmp(cmd->cmd_v[1], "-n", 3))
+	if (cmd->argv[1] && !ft_strncmp(cmd->argv[1], "-n", 3))
 	{
 		print_newline = FALSE;
 		i++;
 	}
-	while (cmd->cmd_v[i])
+	while (cmd->argv[i])
 	{
-		ft_putstr(cmd->cmd_v[i]);
-		if (cmd->cmd_v[i + 1])
+		ft_putstr(cmd->argv[i]);
+		if (cmd->argv[i + 1])
 			ft_putchar(' ');
 		i++;
 	}

@@ -6,7 +6,7 @@
 #    By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/08 16:30:49 by dpiza            ###   ########.fr        #
+#    Updated: 2021/12/09 11:19:38 by dpiza            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS = 				minishell.c \
 					builtin_unset.c \
 					builtin_cd.c \
 					builtin_pwd.c \
+					execve.c \
 					ft_strjoin_free.c
 
 OBJS 			= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))

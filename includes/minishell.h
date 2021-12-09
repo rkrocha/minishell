@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/08 14:36:05 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/09 15:16:21 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <unistd.h>
+# include <sys/wait.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -35,13 +37,14 @@
 
 /*
 ** type: the type of this cmd (bash builtin, minishell env, minishell cd...)
-** cmd_v: command vector, as in ["echo", "-n", "hello", NULL]
+** argv: command vector, as in ["echo", "-n", "hello", NULL]
 ** return_value: the value returned from this command after execution
 */
 typedef struct s_cmd
 {
 	t_uchar	type;
-	char	**cmd_v;
+	char	**argv;
+	int		argc;
 	int		return_value; // vai precisar?
 }	t_cmd;
 
@@ -59,6 +62,7 @@ typedef struct s_shell
 	t_list	*cmd_list;
 	char	*prompt;
 	int		last_return;
+	char	*pwd;
 }	t_shell;
 
 void	init_env(t_shell *minishell, const char **envp);
@@ -73,7 +77,7 @@ int		msh_export(t_shell *minishell, t_cmd *cmd);
 int		msh_unset(t_shell *minishell, t_cmd *cmd);
 int		msh_cd(t_shell *minishell, t_cmd *cmd);
 int		msh_pwd(t_shell *minishell, t_cmd *cmd);
-
+int		msh_execve(t_shell *minishell, t_cmd *cmd);
 
 void	cmd_parser(t_shell *minishell, char *cmd);
 void	cmd_router(t_shell *minishell);

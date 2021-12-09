@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:04:02 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/08 14:24:55 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/09 15:18:09 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	cmd_quotes_parser(t_cmd *cmd)
 {
 	char	**argv;
 
-	argv = cmd->cmd_v;
+	argv = cmd->argv;
 	while (*argv)
 	{
 		// printf("ORIGINAL_ARG: %s\n", *argv); //////////
@@ -52,6 +52,3 @@ void	cmd_quotes_parser(t_cmd *cmd)
 		argv++;
 	}
 }
-
-
-// ls "'$HOME'" '"$HOME"' "'""'" "" '' "hello" "'''" '""$HOME' abc"123" 'abc'123 "abc"$HOME abc"$HOME"abc
