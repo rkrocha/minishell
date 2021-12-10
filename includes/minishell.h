@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/09 20:57:23 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/10 14:28:05 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,14 @@ typedef struct s_shell
 	char	*prompt;
 	int		last_return;
 	char	*pwd;
+	char	*home;
 }	t_shell;
 
 void	init_env(t_shell *minishell, const char **envp);
 int		search_env(t_shell *minishell, const char *var);
 int		env_len(t_shell *minishell);
 char	*get_env(t_shell *minishell, const char *var);
+char	*expand_home(t_shell *minishell, char *cmd);
 
 int		msh_echo(t_shell *minishell, t_cmd *cmd);
 int		msh_env(t_shell *minishell, t_cmd *cmd);

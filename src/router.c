@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   router.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:53:06 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/09 15:17:02 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/10 14:28:01 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	cmd_router(t_shell *minishell)
 	{
 		current = ((t_cmd *)tracker->content);
 		minishell->last_return = func_ptr[current->type](minishell, current);
+		// atualizar var ? de ambiente
 		tracker = tracker->next;
 	}
 }

@@ -6,11 +6,26 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:55:10 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/10 12:00:24 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/10 14:27:48 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*expand_home(t_shell *minishell, char *cmd)
+{
+	char	*path;
+	char	*folder;
+	char	*full_path;
+
+	if (ft_strncmp(cmd, "~", 2) == 0)
+		return (get_env(minishell, "HOME"));
+	path = get_env(minishell, "HOME");
+	folder = ft_substr(cmd, 1, ft_strlen(cmd));
+	full_path = ft_strjoin_free(&path, folder);
+	free (folder);
+	return (full_path);
+}
 
 char	*get_env(t_shell *minishell, const char *var)
 {

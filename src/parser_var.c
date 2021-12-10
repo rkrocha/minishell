@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 10:20:40 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/08 14:13:18 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/10 12:25:00 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,14 @@ static char	**var_expand(t_shell *minishell, char *str)
 		if (!is_var_name(str[i]))
 			break ;
 	}
+	if (i == 1 && str[i] == '?')
+		i++;
 	expansion = malloc(3 * sizeof(char *));
 	expansion[2] = NULL;								// pra poder usar a ft_split_free
 	expansion[1] = ft_substr(str, 0, i);				// grava o nome da variável ex: $HOME
-	if (i == 1)											// caso a str seja somente um '$'
+	if (i == 2 && !ft_strncmp(expansion[1], "$?", 2))	// caso a var seja $?
+		expansion[0] = ft_itoa(minishell->last_return);
+	else if (i == 1)									// caso a str seja somente um '$'
 		expansion[0] = ft_substr(str, 0, i);
 	else
 		expansion[0] = get_env(minishell, expansion[1] + 1); // retorna o conteúdo da variável ex: /home/admin

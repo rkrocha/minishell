@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 14:18:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/09 15:26:09 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/10 14:27:53 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static int	save_var(t_shell *minishell, char *content)
 
 	if (!ft_isalpha(content[0]))
 	{
-		printf("minishell: export: `%s`: not a valid identifier\n", content); /// usar perror?
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(content, 2);
+		ft_putendl_fd("`: not a valid identifier", 2);
 		return (1);
 	}
 	if (!ft_strchr(content, '='))
@@ -41,14 +43,27 @@ static int	save_var(t_shell *minishell, char *content)
 	free(var_name);
 	if (var_index == -1)
 		var_index = env_len(minishell);
-	if (var_index >= ENV_SIZE - 1)
+	if (var_index >= ENV_SIZE)
 	{
-		printf("minishell: export: full environment\n");
+		ft_putendl_fd("minishell: export: full environment\n", 2);
 		return (1);
 	}
 	free(minishell->env[var_index]);
 	minishell->env[var_index] = ft_strdup(content);
 	return (0);
+}
+
+static void	print_vars(t_shell *minishell)
+{
+	int	i;
+
+	i = 0;
+	while (minishell->env[i])
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putendl_fd(minishell->env[i], 1);
+		i++;
+	}
 }
 
 int	msh_export(t_shell *minishell, t_cmd *cmd)
@@ -58,6 +73,8 @@ int	msh_export(t_shell *minishell, t_cmd *cmd)
 
 	i = 1;
 	fail_count = 0;
+	if (cmd->argc == 1)
+		print_vars(minishell);
 	while (cmd->argv[i])
 	{
 		fail_count += save_var(minishell, cmd->argv[i]);

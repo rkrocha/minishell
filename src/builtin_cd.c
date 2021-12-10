@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 13:27:02 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/09 17:23:07 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/10 14:27:46 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,6 @@ static void	update_env_pwd(t_shell *minishell)
 	free(old_pwd_var);
 	del_cmd(update_pwd);
 	del_cmd(update_old_pwd);
-}
-
-static char	*expand_home(t_shell *minishell, char *cmd)
-{
-	char	*path;
-	char	*folder;
-	char	*full_path;
-
-	if (ft_strncmp(cmd, "~", 2) == 0)
-		return (get_env(minishell, "HOME"));
-	path = get_env(minishell, "HOME");
-	folder = ft_substr(cmd, 1, ft_strlen(cmd));
-	full_path = ft_strjoin_free(&path, folder);
-	free (folder);
-	return (full_path);
 }
 
 int	msh_cd(t_shell *minishell, t_cmd *cmd)

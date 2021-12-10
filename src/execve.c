@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 11:00:46 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/09 21:42:14 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/10 14:27:51 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*get_path(t_shell *minishell, t_cmd *cmd)
 	char	*cmd_path;
 	int		i;
 
-	if (**cmd->argv == '.')
+	if (ft_strncmp(*cmd->argv, "./", 2) == 0)
 		return (ft_strdup(cmd->argv[0]));
 	var_path = get_env(minishell, "PATH");
 	path_list = ft_split(var_path, ':');
@@ -28,7 +28,7 @@ static char	*get_path(t_shell *minishell, t_cmd *cmd)
 	{
 		cmd_path = ft_strjoin(path_list[i], "/");
 		cmd_path = ft_strjoin_free(&cmd_path, cmd->argv[0]);
-		if (!access(cmd_path, F_OK))
+		if (!access(cmd_path, F_OK & X_OK))
 			break ;
 		free(cmd_path);
 		cmd_path = NULL;
@@ -59,6 +59,7 @@ static int	get_err(char *cmd, int err_n)
 		return (126);
 }
 
+
 int	msh_execve(t_shell *minishell, t_cmd *cmd)
 {
 	pid_t	pid;
@@ -72,7 +73,8 @@ int	msh_execve(t_shell *minishell, t_cmd *cmd)
 		cmd->return_value = get_err(cmd->argv[0], 0);
 	else
 	{
-		status = pipe(fd);
+		if(pipe(fd))
+			ft_putendl(strerror(errno));
 		free(cmd->argv[0]);
 		cmd->argv[0] = cmd_path;
 		pid = fork();
@@ -84,11 +86,14 @@ int	msh_execve(t_shell *minishell, t_cmd *cmd)
 			exit (0);
 		}
 		else
-		{	
+		{
+			waitpid(pid, &status, WUNTRACED);
 			close(fd[1]);
 			read(fd[0], buffer, 4);
-			cmd->return_value = ft_atoi(buffer);
-			waitpid(pid, &status, WUNTRACED);
+			if (!ft_atoi(buffer))
+				cmd->return_value = WEXITSTATUS(status);
+			else
+				cmd->return_value = ft_atoi(buffer);
 		}
 	}
 	return (cmd->return_value);

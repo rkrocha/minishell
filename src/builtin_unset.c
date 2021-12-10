@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:56:29 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/09 15:27:30 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/10 10:37:14 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ int	msh_unset(t_shell *minishell, t_cmd *cmd)
 		}
 		i++;
 	}
-	return (0);
+	cmd->return_value = 0;
+	return (cmd->return_value);
 }
