@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:55:10 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/09 15:25:04 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/10 12:00:24 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_env(t_shell *minishell, const char *var)
 	i = -1;
 	while (minishell->env[++i])
 	{
-		if (ft_strncmp(minishell->env[i], var, ft_strlen(var)) == 0)
+		if (!ft_strncmp(minishell->env[i], var_join, ft_strlen(var_join)))
 		{
 			var_content = ft_substr(minishell->env[i], ft_strlen(var_join),
 					ft_strlen(minishell->env[i]) - ft_strlen(var_join));
@@ -53,7 +53,7 @@ int	search_env(t_shell *minishell, const char *var)
 	i = -1;
 	while (minishell->env[++i])
 	{
-		if (ft_strncmp(minishell->env[i], var, ft_strlen(var)) == 0)
+		if (!ft_strncmp(minishell->env[i], var_join, ft_strlen(var_join)))
 		{
 			free(var_join);
 			return (i);
