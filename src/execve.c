@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 11:00:46 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/09 18:10:49 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/09 21:42:14 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*get_path(t_shell *minishell, t_cmd *cmd)
 	char	*cmd_path;
 	int		i;
 
-	if (cmd->argv[0][0] == '.')
+	if (**cmd->argv == '.')
 		return (ft_strdup(cmd->argv[0]));
 	var_path = get_env(minishell, "PATH");
 	path_list = ft_split(var_path, ':');
