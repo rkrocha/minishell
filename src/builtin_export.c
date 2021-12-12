@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 14:18:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/10 14:27:53 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/12 13:59:11 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ static int	save_var(t_shell *minishell, char *content)
 	free(var_name);
 	if (var_index == -1)
 		var_index = env_len(minishell);
-	if (var_index >= ENV_SIZE)
+	if (var_index == ENV_SIZE - 1)
 	{
-		ft_putendl_fd("minishell: export: full environment\n", 2);
+		ft_putendl_fd("minishell: export: full environment", 2);
 		return (1);
 	}
 	free(minishell->env[var_index]);
