@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/12 09:06:07 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/12 13:46:57 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,9 @@ int	main(int argc, const char **argv, const char **envp)
 	while (!minishell.end)
 		handle_cmd(&minishell);
 	printf("%i\n", minishell.last_return); ///// remover
-	rl_clear_history();
+	rl_clear_history();			// juntar todos clears e frees em uma só função?
 	ft_split_free(&minishell.env);
+	free(minishell.home);
 	free(minishell.pwd);
 	return (minishell.last_return);
 }

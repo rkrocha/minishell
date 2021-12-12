@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/12 09:21:40 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/12 09:31:14 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,12 @@ int		msh_cd(t_shell *minishell, t_cmd *cmd);
 int		msh_pwd(t_shell *minishell, t_cmd *cmd);
 int		msh_execve(t_shell *minishell, t_cmd *cmd);
 
-void	cmd_parser(t_shell *minishell, char *cmd);
 t_bool	cmd_error_parser(const char *cmd_line);
+void	cmd_parser(t_shell *minishell, char *cmd);
 void	cmd_router(t_shell *minishell);
 void	cmd_var_parser(t_shell *minishell, t_cmd *cmd);
+void	cmd_home_expand(t_shell *minishell, t_cmd *cmd);
 void	cmd_quotes_parser(t_cmd *cmd);
-
-char	*expand_home(t_shell *minishell, char *cmd);
 
 char	*single_cmd_parser(t_shell *minishell, char	*str);
 
