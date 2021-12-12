@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/09 15:28:34 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/12 09:06:07 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,30 @@ void	get_prompt(t_shell *minishell)
 	free(dir);
 }
 
+static void	handle_cmd(t_shell *minishell)
+{
+	char	*cmd_line;
+
+	get_prompt(minishell);
+	cmd_line = readline("\e[32m$\e[00m ");
+	if (!cmd_line || !*cmd_line)
+	{
+		free(cmd_line);
+		return ;
+	}
+	add_history(cmd_line);
+	if (cmd_error_parser(cmd_line) == FALSE)
+	{
+		cmd_parser(minishell, cmd_line);
+		cmd_router(minishell);
+		ft_lstclear(&minishell->cmd_list, del_cmd);
+	}
+	free(cmd_line);
+}
+
 int	main(int argc, const char **argv, const char **envp)
 {
 	t_shell	minishell;
-	char	*cmd_line;
 
 	(void)argc;
 	(void)argv;
@@ -49,21 +69,8 @@ int	main(int argc, const char **argv, const char **envp)
 	ft_bzero(&minishell, sizeof(minishell));
 	init_env(&minishell, envp);
 	while (!minishell.end)
-	{
-		get_prompt(&minishell);
-		cmd_line = readline("\e[32m$\e[00m ");
-		if (!cmd_line || !*cmd_line)
-		{
-			free(cmd_line);
-			continue ;
-		}
-		add_history(cmd_line);
-		cmd_parser(&minishell, cmd_line);
-		cmd_router(&minishell);
-		ft_lstclear(&minishell.cmd_list, del_cmd);
-		free(cmd_line);
-	}
-	printf("%i\n", minishell.last_return);
+		handle_cmd(&minishell);
+	printf("%i\n", minishell.last_return); ///// remover
 	rl_clear_history();
 	ft_split_free(&minishell.env);
 	free(minishell.pwd);

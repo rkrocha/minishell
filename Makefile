@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+         #
+#    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/09 11:19:38 by dpiza            ###   ########.fr        #
+#    Updated: 2021/12/12 09:07:24 by rkochhan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRCS = 				minishell.c \
 					parser.c \
 					parser_var.c \
 					parser_quotes.c \
+					parser_utils.c \
 					router.c \
 					utils.c \
 					env_manager.c \
