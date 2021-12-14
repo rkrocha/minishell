@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/12 09:31:14 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/14 11:11:29 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ typedef struct s_cmd
 */
 typedef struct s_shell
 {
-	int		fd[2];
+	int		data_fd[2];
+	int		ret_fd[2];
 	t_bool	end;
 	char	**env;
 	t_list	*cmd_list;

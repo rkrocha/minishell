@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 17:48:57 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/13 21:48:10 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/14 11:03:36 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc, char **argv, char **envp)
 			// close(fd[1]);
 			// close(fd[0]);
 			execlp(argv[i], argv[i], NULL);
+			
 		}
 		waitpid(pid, &status, WUNTRACED);
 		dup2(fd[0], 0);
