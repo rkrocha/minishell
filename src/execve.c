@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 11:00:46 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/10 14:27:51 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/14 20:35:46 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,31 +70,28 @@ int	msh_execve(t_shell *minishell, t_cmd *cmd)
 
 	cmd_path = get_path(minishell, cmd);
 	if (!cmd_path)
-		cmd->return_value = get_err(cmd->argv[0], 0);
-	else
 	{
-		if(pipe(fd))
-			ft_putendl(strerror(errno));
-		free(cmd->argv[0]);
-		cmd->argv[0] = cmd_path;
-		pid = fork();
-		if (pid == 0)
-		{
-			close(fd[0]);
-			if (execve(cmd->argv[0], cmd->argv, minishell->env))
-				ft_putnbr_fd(get_err(cmd->argv[0], errno), fd[1]);
-			exit (0);
-		}
-		else
-		{
-			waitpid(pid, &status, WUNTRACED);
-			close(fd[1]);
-			read(fd[0], buffer, 4);
-			if (!ft_atoi(buffer))
-				cmd->return_value = WEXITSTATUS(status);
-			else
-				cmd->return_value = ft_atoi(buffer);
-		}
+		cmd->return_value = get_err(cmd->argv[0], 0);
+		return (cmd->return_value);
 	}
+	if(pipe(fd))
+		ft_putendl(strerror(errno));
+	free(cmd->argv[0]);
+	cmd->argv[0] = cmd_path;
+	pid = fork();
+	if (pid == 0)
+	{
+		close(fd[0]);
+		if (execve(cmd->argv[0], cmd->argv, minishell->env))
+			ft_putnbr_fd(get_err(cmd->argv[0], errno), fd[1]);
+		exit (0);
+	}
+	waitpid(pid, &status, WUNTRACED);
+	close(fd[1]);
+	read(fd[0], buffer, 4);
+	if (!ft_atoi(buffer))
+		cmd->return_value = WEXITSTATUS(status);
+	else
+		cmd->return_value = ft_atoi(buffer);
 	return (cmd->return_value);
 }
