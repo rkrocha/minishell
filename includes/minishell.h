@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/15 12:01:05 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/15 13:32:43 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	cmd_home_expand(t_shell *minishell, t_cmd *cmd);
 void	cmd_redirects_parser(t_shell *minishell, t_cmd *cmd);
 void	cmd_quotes_parser(t_cmd *cmd);
 
-t_bool	is_inquotes(char *str, char *expansion);
+int		is_inquotes(char *str, char *expansion);
 t_bool	cmd_error_parser(const char *cmd_line);
 
 char	*single_cmd_parser(t_shell *minishell, char	*str);

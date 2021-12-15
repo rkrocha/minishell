@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 14:04:03 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/15 12:03:29 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/15 13:37:47 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	attribute_quotes(int *quote1, int value1, int *quote2, int value2)
 	*quote2 = value2; ////   esses nomes passam na norma?
 }
 
-t_bool	is_inquotes(char *str, char *expansion)
+int	is_inquotes(char *str, char *expansion)
 {
 	int		quote[3];
 	int		d_quote[3];
@@ -29,20 +29,18 @@ t_bool	is_inquotes(char *str, char *expansion)
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '\'' && quote[2] == 0)
+		if (str[i] == '\'' && quote[2] == 0 && d_quote[2] == 0)
 			attribute_quotes(&quote[0], i + 1, &quote[2], 1);
 		else if (str[i] == '\'' && quote[2] > 0)
 			attribute_quotes(&quote[1], i + 1, &quote[2], 0);
-		if (str[i] == '\"' && d_quote[2] == 0)
+		if (str[i] == '\"' && d_quote[2] == 0 && quote[2] == 0)
 			attribute_quotes(&d_quote[0], i + 1, &d_quote[2], 1);
 		else if ((str[i] == '\"' && d_quote[2] > 0))
 			attribute_quotes(&d_quote[1], i + 1, &d_quote[2], 0);
-		if (str + i == expansion && quote[2] > 0			// se está verificando o indice do '$' && existe uma áspa simples aberta
-		&& (!(d_quote[2] > 0 && quote[0] > d_quote[0]))			// not: se existir uma aspa dupla aberta && estiver antes da simples
-		&& (!(d_quote[2] == 0 && quote[0] > d_quote[0] && quote[0] < d_quote[1])))		// not: se existir uma aspa dupla fechada && estiver depois da simples
-			return (TRUE);
+		if (str + i == expansion)
+			return (quote[2] + d_quote[2] * 10);
 	}
-	return (FALSE);
+	return (-1);
 }
 
 static void	print_error(char *error_msg, char error_char)
