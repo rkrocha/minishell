@@ -3,23 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 11:00:46 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/15 10:08:54 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/15 14:39:40 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_err(char *cmd, int err_n)
+static int	throw_err(char *cmd, int err_n)
 {
 	char	*err;
+	int		ret_no;
 
 	err = ft_strdup("minishell: ");
 	err = ft_strjoin_free(&err, cmd);
 	if (err_n == 0)
 		err = ft_strjoin_free(&err, ": command not found");
+	else if (err_n == -1)
+		err = ft_strjoin_free(&err, ": No such file or directory");
+	else if (err_n == -2)
+		err = ft_strjoin_free(&err, ": Is a directory");
 	else
 	{
 		err = ft_strjoin_free(&err, ": ");
@@ -27,36 +32,20 @@ static int	get_err(char *cmd, int err_n)
 	}
 	ft_putendl(err);
 	free (err);
-	if (err_n == 0)
-		return (127);
-	else
-		return (126);
+	ret_no = 126;
+	if (err_n == 0 || err_n == -1)
+		ret_no = 127;
+	return (ret_no);
 }
 
-static int	check_dir(char *cmd_argv)
-{
-	struct stat	buffer;
-	int			ret;
-
-	ret = stat(cmd_argv, &buffer);
-	printf("type/mode: %d\n", buffer.st_mode);
-	printf("ret: %d\n", ret);
-	return (ret);
-}
-
-static char	*get_path(t_shell *minishell, t_cmd *cmd)
+static char	*get_path(t_shell *msh, t_cmd *cmd)
 {
 	char	*var_path;
 	char	**path_list;
 	char	*cmd_path;
 	int		i;
 
-	if (ft_strncmp(*cmd->argv, "./", 2) == 0)
-	{
-		check_dir(cmd->argv[0]);
-		return (ft_strdup(cmd->argv[0]));
-	}
-	var_path = get_env(minishell, "PATH");
+	var_path = get_env(msh, "PATH");
 	path_list = ft_split(var_path, ':');
 	i = -1;
 	while (path_list[++i])
@@ -70,41 +59,67 @@ static char	*get_path(t_shell *minishell, t_cmd *cmd)
 	}
 	ft_split_free(&path_list);
 	free(var_path);
-	if (!cmd_path)
-		cmd->return_value = get_err(cmd->argv[0], 0);
 	return (cmd_path);
 }
 
-int	msh_execve(t_shell *minishell, t_cmd *cmd)
+static char	*get_cmd_path(t_shell *msh, t_cmd *cmd)
+{
+	char		*cmd_path;
+	struct stat	buffer;
+
+	if (ft_strncmp(*cmd->argv, "./", 2) == 0)
+	{
+		stat(cmd->argv[0], &buffer);
+		if (access(cmd->argv[0], F_OK))
+			cmd->return_value = throw_err(cmd->argv[0], -1);
+		else if (buffer.st_mode == 16877)
+			cmd->return_value = throw_err(cmd->argv[0], -2);
+		else
+			return (ft_strdup(cmd->argv[0]));
+		return (NULL);
+	}
+	cmd_path = get_path(msh, cmd);
+	if (!cmd_path)
+		cmd->return_value = throw_err(cmd->argv[0], 0);
+	return (cmd_path);
+}
+
+static void	exec_cmd(t_shell *msh, t_cmd *cmd, int *fd)
+{
+	int	ret_status;
+
+	ret_status = 0;
+	close(fd[0]);
+	execve(cmd->argv[0], cmd->argv, msh->env);
+	ret_status = throw_err(cmd->argv[0], errno);
+	write(fd[1], &ret_status, sizeof(int));
+	exit (0);
+}
+
+int	msh_execve(t_shell *msh, t_cmd *cmd)
 {
 	pid_t	pid;
 	char	*cmd_path;
 	int		status;
-	char	buffer[4];
+	int		ret_status;
 	int		fd[2];
 
-	cmd_path = get_path(minishell, cmd);
+	cmd_path = get_cmd_path(msh, cmd);
 	if (!cmd_path)
 		return (cmd->return_value);
 	free(cmd->argv[0]);
 	cmd->argv[0] = cmd_path;
-	
-	if(pipe(fd))
+	ret_status = 0;
+	if (pipe(fd))
 		ft_putendl(strerror(errno));
 	pid = fork();
 	if (pid == 0)
-	{
-		close(fd[0]);
-		if (execve(cmd->argv[0], cmd->argv, minishell->env))
-			ft_putnbr_fd(get_err(cmd->argv[0], errno), fd[1]);
-		exit (0);
-	}
+		exec_cmd(msh, cmd, fd);
 	waitpid(pid, &status, WUNTRACED);
 	close(fd[1]);
-	read(fd[0], buffer, 4);
-	if (!ft_atoi(buffer))
-		cmd->return_value = WEXITSTATUS(status);
-	else
-		cmd->return_value = ft_atoi(buffer);
+	read(fd[0], &ret_status, sizeof(int));
+	cmd->return_value = WEXITSTATUS(status);
+	if (ret_status)
+		cmd->return_value = ret_status;
 	return (cmd->return_value);
 }
