@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   router.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:53:06 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/14 13:35:01 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/15 14:40:27 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,26 @@ static void	cmd_exec_pipes(t_shell *minishell, t_cmd *current)
 	exit(0);
 }
 
+static void	print_from_pipe(int fd)
+{
+	char	*str;
+
+	while (TRUE)
+	{
+		str = get_next_line(fd);
+		if (!str)
+			break ;
+		ft_putstr(str);
+		free(str);
+	}
+}
+
 static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 {
 	t_cmd	*current;
 	int		pid;
 	int		clone_in;
-	char	buffer[512];
-	
+
 	clone_in = dup(0);
 	pipe(msh->ret_fd);
 	while (tracker)
@@ -63,9 +76,7 @@ static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 		close(msh->data_fd[1]);
 		tracker = tracker->next;
 	}
-	read(msh->data_fd[0], buffer, 512);
-	buffer[511] = '\0';
-	printf("%s", buffer);
+	print_from_pipe(msh->data_fd[0]);
 	close(msh->data_fd[0]);
 	close(msh->data_fd[1]);
 	close(msh->ret_fd[0]);
