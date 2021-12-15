@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 10:20:40 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/15 11:53:38 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/15 14:39:36 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ static char	**var_expand(t_shell *minishell, char *str)
 	if (i == 1 && str[i] == '?')
 		i++;
 	expansion = malloc(3 * sizeof(char *));
-	expansion[2] = NULL;								// pra poder usar a ft_split_free
-	expansion[1] = ft_substr(str, 0, i);				// grava o nome da variável ex: $HOME
-	if (i == 2 && !ft_strncmp(expansion[1], "$?", 2))	// caso a var seja $?
+	expansion[2] = NULL;
+	expansion[1] = ft_substr(str, 0, i);
+	if (i == 2 && !ft_strncmp(expansion[1], "$?", 2))
 		expansion[0] = ft_itoa(minishell->last_return);
-	else if (i == 1)									// caso a str seja somente um '$'
+	else if (i == 1)
 		expansion[0] = ft_substr(str, 0, i);
 	else
-		expansion[0] = get_env(minishell, expansion[1] + 1); // retorna o conteúdo da variável ex: /home/admin
+		expansion[0] = get_env(minishell, expansion[1] + 1);
 	return (expansion);
 }
 
@@ -61,8 +61,6 @@ char	*single_cmd_parser(t_shell *minishell, char	*str)
 	char	*tracker;
 	char	**content;
 
-	if (!ft_strchr(str, '$'))
-		return (NULL);
 	new_str = ft_strdup("");
 	expansion = str;
 	while (expansion)
@@ -77,7 +75,8 @@ char	*single_cmd_parser(t_shell *minishell, char	*str)
 		if (expansion != tracker)
 			new_str = copy_middle(&new_str, tracker, expansion - tracker);
 		content = var_expand(minishell, expansion);
-		new_str = ft_strjoin_free(&new_str, content[(int)is_inquotes(str, expansion)]);
+		new_str = ft_strjoin_free(&new_str,
+				content[is_inquotes(str, expansion) == 1]);
 		expansion += ft_strlen(content[1]);
 		ft_split_free(&content);
 	}
