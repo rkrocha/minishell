@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/14 11:11:29 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/15 12:01:05 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include "get_next_line.h"
 # include <unistd.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -43,9 +45,13 @@
 typedef struct s_cmd
 {
 	t_uchar	type;
-	char	**argv;
-	int		argc;
 	int		return_value; // vai precisar?
+	int		argc;
+	char	**argv;
+	char	*input; // 0 não tem, 1 do arquivo, 2 here doc
+	char	**input_file; // se for do tipo 1, tem file
+	char	*output; // 0 se não tiver, 1 overwrite, 2 append
+	char	**output_file; // se for 1 ou 2, tem file
 }	t_cmd;
 
 /*
@@ -81,12 +87,15 @@ int		msh_cd(t_shell *minishell, t_cmd *cmd);
 int		msh_pwd(t_shell *minishell, t_cmd *cmd);
 int		msh_execve(t_shell *minishell, t_cmd *cmd);
 
-t_bool	cmd_error_parser(const char *cmd_line);
 void	cmd_parser(t_shell *minishell, char *cmd);
 void	cmd_router(t_shell *minishell);
 void	cmd_var_parser(t_shell *minishell, t_cmd *cmd);
 void	cmd_home_expand(t_shell *minishell, t_cmd *cmd);
+void	cmd_redirects_parser(t_shell *minishell, t_cmd *cmd);
 void	cmd_quotes_parser(t_cmd *cmd);
+
+t_bool	is_inquotes(char *str, char *expansion);
+t_bool	cmd_error_parser(const char *cmd_line);
 
 char	*single_cmd_parser(t_shell *minishell, char	*str);
 
