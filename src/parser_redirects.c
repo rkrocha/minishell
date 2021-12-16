@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:46:34 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/16 14:06:12 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/16 16:10:07 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,11 @@ char	*divide_redirects(char *cmd)
 	return (new_cmd);
 }
 
-// static int	find_redirect(char *arg)
+// static int	get_redirect(t_shell *minishell, char *redir, char *arg)
 // {
+// 	char	*redir_str;
+
+// 	if (!arg)
 
 // }
 
@@ -76,7 +79,12 @@ char	*divide_redirects(char *cmd)
 // 	i = 0;
 // 	while (cmd->argv[i])
 // 	{
-// 		find_redirect(cmd->argv[i]);
+// 		if (cmd->argv[i][0] == '<' || cmd->argv[i][0] == '>')
+// 		{
+// 			if(get_redirect(minishell, cmd->argv[i], cmd->argv[i + 1]) == -1)
+// 				break ;
+// 			i++;
+// 		}
 // 		i++;
 // 	}
 // }
@@ -87,4 +95,9 @@ char	*divide_redirects(char *cmd)
 **	arg por arg em argv: buscar redirect
 **		colher informações e checar erros
 **	Se não tiver erros, remover args do argv que são redirects ou args de redirs
+**	Atualizar o argc
+
+
+** TIRAR AS ASPAS
+** CHECAR ARG NULO
 */
