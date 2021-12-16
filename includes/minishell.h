@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/16 12:20:08 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/16 15:45:51 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ typedef struct s_cmd
 	int		return_value; // vai precisar?
 	int		argc;
 	char	**argv;
-	char	*input; // \0 não tem, 1 do arquivo, 2 here doc. String terminada em \0
-	char	**input_file; // se for do tipo 1, tem file. Matriz terminada em NULL
-	char	*output; // 0 se não tiver, 1 overwrite, 2 append
-	char	**output_file; // se for 1 ou 2, tem file
+	t_list	*input; // se for do tipo 1, é de file. 2 é heredoc. Matriz terminada em NULL
+	t_list	*output; // se for 1 é overwrite,  2 é append.  Matriz termina em NULL
 }	t_cmd;
 
 /*
