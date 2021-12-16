@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/15 14:39:08 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/16 12:25:52 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,10 @@ void	cmd_parser(t_shell *minishell, char *cmd_line)
 	int		i;
 
 	cmd_pipe_parser(cmd_line);
+	cmd_line = divide_redirects(cmd_line);
 	cmd_space_parser(cmd_line);
 	cmds_split_by_pipe = ft_split(cmd_line, PIPE_SEP);
+	free(cmd_line);
 	i = 0;
 	while (cmds_split_by_pipe[i])
 	{

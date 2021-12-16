@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/15 13:32:43 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/16 12:20:08 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ typedef struct s_cmd
 	int		return_value; // vai precisar?
 	int		argc;
 	char	**argv;
-	char	*input; // 0 não tem, 1 do arquivo, 2 here doc
-	char	**input_file; // se for do tipo 1, tem file
+	char	*input; // \0 não tem, 1 do arquivo, 2 here doc. String terminada em \0
+	char	**input_file; // se for do tipo 1, tem file. Matriz terminada em NULL
 	char	*output; // 0 se não tiver, 1 overwrite, 2 append
 	char	**output_file; // se for 1 ou 2, tem file
 }	t_cmd;
@@ -93,6 +93,8 @@ void	cmd_var_parser(t_shell *minishell, t_cmd *cmd);
 void	cmd_home_expand(t_shell *minishell, t_cmd *cmd);
 void	cmd_redirects_parser(t_shell *minishell, t_cmd *cmd);
 void	cmd_quotes_parser(t_cmd *cmd);
+
+char	*divide_redirects(char *cmd_line);
 
 int		is_inquotes(char *str, char *expansion);
 t_bool	cmd_error_parser(const char *cmd_line);
