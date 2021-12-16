@@ -6,7 +6,7 @@
 #    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/15 11:50:37 by rkochhan         ###   ########.fr        #
+#    Updated: 2021/12/16 14:00:17 by rkochhan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS = 				minishell.c \
 					parser_home.c \
 					parser_redirects.c \
 					parser_quotes.c \
+					parser_error.c \
 					parser_utils.c \
 					router.c \
 					utils.c \

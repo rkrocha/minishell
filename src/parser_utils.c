@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 14:04:03 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/15 13:37:47 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/16 13:59:25 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,57 +41,4 @@ int	is_inquotes(char *str, char *expansion)
 			return (quote[2] + d_quote[2] * 10);
 	}
 	return (-1);
-}
-
-static void	print_error(char *error_msg, char error_char)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(error_msg, 2);
-	if (error_char)
-	{
-		ft_putstr_fd(" `", 2);
-		ft_putchar_fd(error_char, 2);
-		ft_putchar_fd('`', 2);
-	}
-	ft_putchar_fd('\n', 2);
-}
-
-static void	check_pipe_error(const char *str, t_bool *found_error)
-{
-	char	*next_cmd;
-
-	next_cmd = ft_strignore(str, BLANK_SPACES);
-	if (next_cmd && *next_cmd != '|')
-		return ;
-	*found_error = TRUE;
-	print_error("syntax error near unexpected token", '|');
-}
-
-t_bool	cmd_error_parser(const char *cmd_line)
-{
-	int		i;
-	char	quote;
-	t_bool	found_error;
-
-	i = 0;
-	quote = '\0';
-	found_error = FALSE;
-	while (cmd_line[i])
-	{
-		if (quote == '\0' && (cmd_line[i] == '\'' || cmd_line[i] == '\"'))
-			quote = cmd_line[i];
-		else if (quote != '\0' && cmd_line[i] == quote)
-			quote = '\0';
-		if (quote == '\0' && cmd_line[i] == '|')
-			check_pipe_error(&cmd_line[i + 1], &found_error);
-		if (found_error)
-			return (found_error);
-		i++;
-	}
-	if (quote != '\0')
-	{
-		found_error = TRUE;
-		print_error("syntax error from unclosed quotes", quote);
-	}
-	return (found_error);
 }
