@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/16 12:25:52 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/16 16:14:52 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	cmd_var_parser(t_shell *minishell, t_cmd *cmd)
 	i = -1;
 	while (cmd->argv[++i])
 	{
-		cmd->argc = i + 1;
 		// printf("ORIGINAL_CMD: %s\n", cmd->argv[i]);
 		if (!ft_strchr(cmd->argv[i], '$'))
 			continue ;
@@ -88,6 +87,7 @@ void	cmd_var_parser(t_shell *minishell, t_cmd *cmd)
 		cmd->argv[i] = cmd_expanded;
 		// printf("EXPANDED_CMD: %s\n", cmd->argv[i]);
 	}
+	cmd->argc = i + 1;
 }
 
 void	cmd_parser(t_shell *minishell, char *cmd_line)
