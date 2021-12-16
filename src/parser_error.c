@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 13:59:40 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/16 14:51:55 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/16 16:10:19 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ static void	check_pipe_error(const char *str, t_bool *found_error)
 
 static void	check_redirect_error(const char *str, t_bool *found_error)
 {
-	int	redir_len;
+	int		redir_len;
+	char	*check_end;
 
 	redir_len = 0;
 	while (str[redir_len] && (str[redir_len] == '<' || str[redir_len] == '>'))
 		redir_len++;
-	if (redir_len == 1 || (redir_len == 2 && str[0] == str[1]))
+	check_end = ft_strignore(&str[redir_len], BLANK_SPACES);
+	if (check_end && (redir_len == 1 || (redir_len == 2 && str[0] == str[1])))
 		return ;
 	*found_error = TRUE;
 	print_error("syntax error near unexpected token", str[0]);
