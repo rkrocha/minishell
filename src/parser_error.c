@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 13:59:40 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/16 16:10:19 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/17 10:42:58 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static void	check_redirect_error(const char *str, t_bool *found_error)
 	while (str[redir_len] && (str[redir_len] == '<' || str[redir_len] == '>'))
 		redir_len++;
 	check_end = ft_strignore(&str[redir_len], BLANK_SPACES);
+	if (check_end && *check_end == '|')
+		check_end = NULL;
 	if (check_end && (redir_len == 1 || (redir_len == 2 && str[0] == str[1])))
 		return ;
 	*found_error = TRUE;
