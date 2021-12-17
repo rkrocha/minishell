@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 13:27:02 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/15 16:13:53 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/17 12:49:37 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,29 @@ static void	update_env_pwd(t_shell *minishell)
 	del_cmd(update_pwd);
 }
 
+static int	cd_throw_err(int err, char *destiny, int err_no)
+{
+	if (err == 1)
+		ft_putendl("minishell: cd: too many arguments");
+	else
+	{
+		ft_putstr("minishell: cd: ");
+		ft_putstr(destiny);
+		ft_putstr(": ");
+		ft_putendl(strerror(err_no));
+	}
+	return (1);
+}
+
 int	msh_cd(t_shell *minishell, t_cmd *cmd)
 {
 	char	*destiny;
 
+	if (cmd->argc > 2)
+	{
+		cmd->return_value = cd_throw_err(1, NULL, 0);
+		return (cmd->return_value);
+	}
 	if (!cmd->argv[1])
 		destiny = get_env(minishell, "HOME");
 	else if (ft_strncmp(cmd->argv[1], "-", 2) == 0)
@@ -44,13 +63,7 @@ int	msh_cd(t_shell *minishell, t_cmd *cmd)
 	else
 		destiny = ft_strdup(cmd->argv[1]);
 	if (chdir(destiny))
-	{
-		ft_putstr("minishell: cd: ");
-		ft_putstr(destiny);
-		ft_putstr(": ");
-		ft_putendl(strerror(errno));
-		cmd->return_value = 1;
-	}
+		cmd->return_value = cd_throw_err(0, destiny, errno);
 	else
 		update_env_pwd(minishell);
 	free(destiny);
