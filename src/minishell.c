@@ -6,11 +6,15 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/15 14:42:55 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/17 16:37:31 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+
+// #include <fcntl.h>
 
 void	get_prompt(t_shell *minishell)
 {
@@ -57,6 +61,13 @@ static void	handle_cmd(t_shell *minishell)
 		ft_lstclear(&minishell->cmd_list, del_cmd);
 	}
 	free(cmd_line);
+	// int fd1 = open("/dev/tty", O_RDONLY);
+	// dup2(fd1, 0);
+	// close(fd1);
+	// int fd2 = open("/dev/pts/1", O_WRONLY);
+	// dup2(fd2, 1);
+	// dup2(fd2, 2);
+	// close(fd2);
 }
 
 int	main(int argc, const char **argv, const char **envp)
