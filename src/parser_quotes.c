@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:04:02 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/09 15:18:09 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/17 13:29:43 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	arg_quotes_parser(char *arg)
+void	arg_quotes_parser(char *arg)
 {
 	int		reader;
 	int		printer;

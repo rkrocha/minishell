@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:46:34 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/16 16:10:07 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/17 13:33:38 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*divide_redirects(char *cmd)
 	new_cmd = malloc(new_size * sizeof(char));
 	reader = 0;
 	printer = 0;
-	printf("old cmd: %s // %d\n", cmd, new_size);
+	// printf("old cmd: %s // %d\n", cmd, new_size);
 	while (cmd[reader])
 	{
 		if (ft_strchr("<>", cmd[reader]) && !is_inquotes(cmd, &cmd[reader]))
@@ -60,35 +60,93 @@ char	*divide_redirects(char *cmd)
 		new_cmd[printer++] = cmd[reader++];
 	}
 	new_cmd[printer] = '\0';
-	printf("new cmd: %s\n", new_cmd);
+	// printf("new cmd: %s\n", new_cmd);
 	return (new_cmd);
 }
 
-// static int	get_redirect(t_shell *minishell, char *redir, char *arg)
-// {
-// 	char	*redir_str;
+static void	get_redirect(t_cmd *cmd, char **redir, char **arg)
+{
+	t_list	**chosen_redir;
+	char	*redir_type;
+	char	*redir_str;
 
-// 	if (!arg)
+	chosen_redir = &cmd->output;
+	if (*redir[0] == '<')
+		chosen_redir = &cmd->input;
+	redir_type = ft_itoa(ft_strlen(*redir));
+	arg_quotes_parser(*arg);
+	redir_str = ft_strjoin(redir_type, *arg);
+	free(redir_type);
+	ft_strdel(redir);
+	ft_strdel(arg);
+	ft_lstadd_back(chosen_redir, ft_lstnew(redir_str));
+}
 
-// }
+static int	cat_argv(int argc, char **argv)
+{
+	int	i;
+	int	j;
 
-// void	cmd_redirects_parser(t_shell *minishell, t_cmd *cmd)
-// {
-// 	int	i;
+	i = 0;
+	while (i < argc)
+	{
+		j = 0;
+		if (argv[i] == NULL)
+		{
+			while (i + j < argc && argv[i + j] == NULL)
+				j++;
+			if (i + j >= argc)
+				break ;
+			argv[i] = argv[i + j];
+			argv[i + j] = NULL;
+		}
+		i++;
+	}
+	argc = 0;
+	while (argv[argc])
+		argc++;
+	return (argc);
+}
 
-// 	i = 0;
-// 	while (cmd->argv[i])
-// 	{
-// 		if (cmd->argv[i][0] == '<' || cmd->argv[i][0] == '>')
-// 		{
-// 			if(get_redirect(minishell, cmd->argv[i], cmd->argv[i + 1]) == -1)
-// 				break ;
-// 			i++;
-// 		}
-// 		i++;
-// 	}
-// }
+void	cmd_redirects_parser(t_cmd *cmd)
+{
+	int	i;
 
+	i = 0;
+	while (cmd->argv[i])
+	{
+		if (cmd->argv[i][0] == '<' || cmd->argv[i][0] == '>')
+		{
+			get_redirect(cmd, &cmd->argv[i], &cmd->argv[i + 1]);
+			i++;
+		}
+		i++;
+	}
+	cmd->argc = cat_argv(cmd->argc, cmd->argv);
+
+
+
+	// t_list	*tracker;
+	// printf("Argc: %i\n", cmd->argc);
+	// printf("Input:\n");
+	// tracker = cmd->input;
+	// while (tracker)
+	// {
+	// 	printf("%s\n", (char *)tracker->content);
+	// 	tracker = tracker->next;
+	// }
+	// printf("\nOutput:\n");
+	// tracker = cmd->output;
+	// while (tracker)
+	// {
+	// 	printf("%s\n", (char *)tracker->content);
+	// 	tracker = tracker->next;
+	// }
+	// printf("______________\n");
+}
+
+// 2EOF
+// 1"file.txt"
 // <<< redireciona string para input: fora do escopo (erro)
 
 /*

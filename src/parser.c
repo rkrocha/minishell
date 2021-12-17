@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/16 16:14:52 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/17 13:15:06 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	cmd_var_parser(t_shell *minishell, t_cmd *cmd)
 		cmd->argv[i] = cmd_expanded;
 		// printf("EXPANDED_CMD: %s\n", cmd->argv[i]);
 	}
-	cmd->argc = i + 1;
+	cmd->argc = i;
 }
 
 void	cmd_parser(t_shell *minishell, char *cmd_line)
@@ -109,7 +109,7 @@ void	cmd_parser(t_shell *minishell, char *cmd_line)
 		new_cmd->argv = ft_split(cmds_split_by_pipe[i], CMD_SEP);
 		cmd_var_parser(minishell, new_cmd);
 		cmd_home_expand(minishell, new_cmd);
-		// cmd_redirects_parser(minishell, new_cmd);
+		cmd_redirects_parser(new_cmd);
 		cmd_quotes_parser(new_cmd);
 		define_type(new_cmd);
 		ft_lstadd_back(&minishell->cmd_list, ft_lstnew(new_cmd));
