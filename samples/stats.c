@@ -17,9 +17,13 @@ int	main(void)
 	ret = stat("./diretorio/arquivo1", &buffer);
 	printf("arquivo1 - type/mode: %d size: %d\n", buffer.st_mode, buffer.st_size);
 	ret = stat("./diretorio/hello.sh", &buffer);
-	printf("arquivo1 - type/mode: %d size: %d\n", buffer.st_mode, buffer.st_size);
+	printf("hello - type/mode: %d size: %d\n", buffer.st_mode, buffer.st_size);
 	ret = stat("./diretorio/hello", &buffer);
-	printf("arquivo1 - type/mode: %d size: %d\n", buffer.st_mode, buffer.st_size);
+	printf("hello shebang - type/mode: %d size: %d\n", buffer.st_mode, buffer.st_size);
+	ret = stat("./diretorio", &buffer);
+	printf("diretorio - type/mode: %d size: %d\n", buffer.st_mode, buffer.st_size);
+	ret = stat("./_redirect", &buffer);
+	printf("_redirect - type/mode: %d size: %d\n", buffer.st_mode, buffer.st_size);
 	return (0);
 }
 
