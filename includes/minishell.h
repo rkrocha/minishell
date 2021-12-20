@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/17 13:29:59 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/20 15:11:07 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "get_next_line.h"
+# include <fcntl.h>
 # include <unistd.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
@@ -101,9 +102,14 @@ t_bool	cmd_error_parser(const char *cmd_line);
 
 char	*single_cmd_parser(t_shell *minishell, char	*str);
 
+void		redirect(t_cmd *cmd, int *redir);
+int	throw_err(char *cmd, int err_n);
+
 void	del_cmd(void *elem);
 t_cmd	*get_cmd(void *elem);
 
 char	*ft_strjoin_free(char **s1, char const *s2);
+
+t_bool	check_input(void);
 
 #endif

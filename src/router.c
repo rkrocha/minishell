@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   router.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:53:06 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/15 14:40:27 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/20 15:31:15 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 	t_cmd	*current;
 	int		pid;
 	int		clone_in;
+	int		redir[2];
 
+	ft_bzero(redir, 2 * sizeof(int));
 	clone_in = dup(0);
 	pipe(msh->ret_fd);
 	while (tracker)
@@ -65,14 +67,20 @@ static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 			// caso haja um redirect de entrada
 			// open("[]");
 			// caso haja um redirect de saída
-			dup2(msh->data_fd[1], 1);
+			redirect(current, redir);
+			if (redir[0])
+				dup2(redir[0], 0);
+			if (!redir[1])
+				redir[1] = msh->data_fd[1];
+			dup2(redir[1], 1);
 			close(msh->data_fd[0]);
 			close(msh->data_fd[1]);
 			cmd_exec_pipes(msh, current);
 		}
 		wait(NULL);
 		read(msh->ret_fd[0], &msh->last_return, sizeof(msh->last_return));
-		dup2(msh->data_fd[0], 0);
+		if (tracker->next && !((t_cmd *)tracker->next->content)->input)
+			dup2(msh->data_fd[0], 0);
 		close(msh->data_fd[1]);
 		tracker = tracker->next;
 	}

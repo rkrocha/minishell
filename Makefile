@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/17 14:30:32 by rkochhan         ###   ########.fr        #
+#    Updated: 2021/12/20 15:13:55 by dpiza            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT_DIR 		= ./libft
 LIBFT 			= $(LIBFT_DIR)/libft.a
 
 CC 				= gcc
-CFLAGS 			= -g -Wall -Wextra -Werror #$(LEAKCHECK)
+CFLAGS 			= -g -Wall -Wextra -Werror $(LEAKCHECK)
 LEAKCHECK 		= -fsanitize=address
 LFLAGS 			= -L./libft -lft -lreadline
 IFLAGS			= -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
@@ -46,6 +46,7 @@ SRCS = 				minishell.c \
 					parser_utils.c \
 					router.c \
 					utils.c \
+					fd_utils.c \
 					env_manager.c \
 					builtin_echo.c \
 					builtin_env.c \
@@ -56,7 +57,8 @@ SRCS = 				minishell.c \
 					builtin_pwd.c \
 					execve.c \
 					get_next_line.c \
-					ft_strjoin_free.c
+					ft_strjoin_free.c \
+					redirect.c
 
 OBJS 			= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))
 
