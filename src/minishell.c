@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/17 16:37:31 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/20 14:12:33 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-
-// #include <fcntl.h>
 
 void	get_prompt(t_shell *minishell)
 {
@@ -46,6 +42,7 @@ static void	handle_cmd(t_shell *minishell)
 {
 	char	*cmd_line;
 
+	minishell->end = check_input();
 	get_prompt(minishell);
 	cmd_line = readline("\e[32m$\e[00m ");
 	if (!cmd_line || !*cmd_line)
