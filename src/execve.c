@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 11:00:46 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/20 15:11:01 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/21 13:11:28 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	throw_err(char *cmd, int err_n)
 		err = ft_strjoin_free(&err, ": No such file or directory");
 	else if (err_n == -2)
 		err = ft_strjoin_free(&err, ": Is a directory");
+	else if (err_n == -3)
+		err = ft_strjoin_free(&err, ": Permission denied");
 	else
 	{
 		err = ft_strjoin_free(&err, ": ");
@@ -121,5 +123,6 @@ int	msh_execve(t_shell *msh, t_cmd *cmd)
 	cmd->return_value = WEXITSTATUS(status);
 	if (ret_status)
 		cmd->return_value = ret_status;
+	close(fd[0]);
 	return (cmd->return_value);
 }
