@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/21 13:29:08 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/21 14:57:33 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,22 @@ void	get_prompt(t_shell *minishell)
 	free(dir);
 }
 
+static void	sigint(int signum)
+{
+	rl_on_new_line();
+	ft_putchar('\n');
+	rl_replace_line("", 0);
+	rl_redisplay();
+	(void)signum;
+}
+
 static void	handle_cmd(t_shell *minishell)
 {
 	char	*cmd_line;
 
 	minishell->end = check_input();
-	get_prompt(minishell);
+	// get_prompt(minishell);
+	signal(SIGINT, sigint);
 	cmd_line = readline("\e[32m$\e[00m ");
 	if (!cmd_line)
 		exit(0);
@@ -78,6 +88,7 @@ int	main(int argc, const char **argv, const char **envp)
 	// definições de sinais?
 	ft_bzero(&minishell, sizeof(minishell));
 	init_env(&minishell, envp);
+	signal(SIGQUIT, SIG_IGN);
 	while (!minishell.end)
 		handle_cmd(&minishell);
 	printf("%i\n", minishell.last_return); ///// remover
@@ -87,3 +98,7 @@ int	main(int argc, const char **argv, const char **envp)
 	free(minishell.pwd);
 	return (minishell.last_return);
 }
+
+
+// CTRL + C = SIGINT
+// CTRL + \ = SIGQUIT
