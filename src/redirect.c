@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 13:39:28 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/20 15:45:01 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/21 13:22:33 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	here_doc(char *delim)
 		str = get_next_line(0);
 		if (!str)
 		{
-			ft_putstr_fd("here_document delimited by end-of-file (wanted `", 2);
+			ft_putstr_fd("minishell: warning: here_document delimited by end-of-file (wanted `", 2);
 			ft_putstr_fd(delim, 2);
 			ft_putendl_fd("`)", 2);
 			break ;
@@ -82,13 +82,28 @@ int		redirect_input(t_list *input)
 		if (fd < 0)
 			break ;
 		tracker = tracker->next;
+		if (tracker)
+			close(fd);
 	}
 	return (fd);
 }
 
 int	open_output(char *file_name, int type)
 {
-	
+	struct stat	buffer;
+	int		fd;
+
+	fd = -1;
+	stat(file_name, &buffer);
+	if (buffer.st_mode == 16877)
+		throw_err(file_name, -2);
+	else if (access(file_name, F_OK) && !access(file_name, W_OK))
+		throw_err(file_name, -3);
+	if (type == 1)
+		fd = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	else if (type == 2)
+		fd = open(file_name, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	return (fd);
 }
 
 int		redirect_output(t_list *output)
@@ -109,6 +124,8 @@ int		redirect_output(t_list *output)
 		if (fd < 0)
 			break ;
 		tracker = tracker->next;
+		if (tracker)
+			close(fd);
 	}
 	return (fd);
 }
