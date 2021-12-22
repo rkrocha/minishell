@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   router.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:53:06 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/21 13:47:30 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/22 15:13:42 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,12 @@ static void	cmd_exec_single(t_shell *minishell, t_cmd *current)
 	int					clone_out;
 
 	ft_bzero(redir, 2 * sizeof(int));
-	redirect(current, redir);
+	redirect(minishell, current, redir);
+	if (redir[0] < 0)
+	{
+		minishell->last_return = 130;
+		return ;
+	}
 	if (redir[0] > 0)
 	{
 		clone_in = dup(0);
@@ -84,18 +89,24 @@ static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 	int		pid;
 	int		clone_in;
 	int		redir[2];
+	int		status;
 
 	ft_bzero(redir, 2 * sizeof(int));
 	clone_in = dup(0);
 	pipe(msh->ret_fd);
-	while (tracker)
+	while (tracker && WEXITSTATUS(status) != 130)
 	{
 		current = ((t_cmd *)tracker->content);
 		pipe(msh->data_fd);
 		pid = fork();
 		if (pid == 0)
 		{
-			redirect(current, redir);
+			redirect(msh, current, redir);
+			if (redir[0] < 0)
+			{
+				write(msh->ret_fd[1], &redir[0], sizeof(int));
+				exit(130);
+			}
 			if (redir[0])
 				dup2(redir[0], 0);
 			if (!redir[1])
@@ -105,9 +116,12 @@ static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 			close(msh->data_fd[1]);
 			cmd_exec_pipes(msh, current);
 		}
-		wait(NULL);
+		// wait(NULL);
+		waitpid(pid, &status, WUNTRACED);
 		read(msh->ret_fd[0], &msh->last_return, sizeof(msh->last_return));
-		if (tracker->next && !((t_cmd *)tracker->next->content)->input)
+		if (WEXITSTATUS(status) == 130)
+			msh->last_return = 130;
+		if (msh->last_return != 130 && tracker->next && !((t_cmd *)tracker->next->content)->input)
 		{
 			dup2(msh->data_fd[0], 0);
 			close(msh->data_fd[0]);
@@ -115,7 +129,8 @@ static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 		close(msh->data_fd[1]);
 		tracker = tracker->next;
 	}
-	print_from_pipe(msh->data_fd[0]);
+	if (msh->last_return != 130)
+		print_from_pipe(msh->data_fd[0]);
 	close(msh->data_fd[0]);
 	close(msh->data_fd[1]);
 	close(msh->ret_fd[0]);
@@ -129,9 +144,11 @@ void	cmd_router(t_shell *minishell)
 {
 	t_list	*tracker;
 
+	signal(SIGINT, SIG_IGN);
 	tracker = minishell->cmd_list;
 	if (!tracker->next)
 		cmd_exec_single(minishell, ((t_cmd *)tracker->content));
 	else
 		cmd_exec_pipes_iter(minishell, tracker);
+	signal(SIGINT, sigint);
 }

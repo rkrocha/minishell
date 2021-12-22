@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/21 14:57:33 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/22 15:15:43 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	get_prompt(t_shell *minishell)
 		dir = ft_strdup("/");
 	else
 		dir = ft_strjoin("", ft_strrchr(pwd, '/') + 1);
-	printf("[\e[34m%s@%s\e[00m \e[36m%s\e[00m]", user, host, dir);
+	printf("[\e[34m%s@%s\e[00m \e[36m%s\e[00m] \e[32m$\e[00m ", user, host, dir);
 	free(user);
 	free(host);
 	free(pwd);
@@ -38,22 +38,13 @@ void	get_prompt(t_shell *minishell)
 	free(dir);
 }
 
-static void	sigint(int signum)
-{
-	rl_on_new_line();
-	ft_putchar('\n');
-	rl_replace_line("", 0);
-	rl_redisplay();
-	(void)signum;
-}
-
 static void	handle_cmd(t_shell *minishell)
 {
 	char	*cmd_line;
 
 	minishell->end = check_input();
+	minishell->abort_cmd = FALSE;
 	// get_prompt(minishell);
-	signal(SIGINT, sigint);
 	cmd_line = readline("\e[32m$\e[00m ");
 	if (!cmd_line)
 		exit(0);
@@ -66,6 +57,7 @@ static void	handle_cmd(t_shell *minishell)
 	if (cmd_error_parser(cmd_line) == FALSE)
 	{
 		cmd_parser(minishell, cmd_line);
+		ft_strdel(&cmd_line);
 		cmd_router(minishell);
 		ft_lstclear(&minishell->cmd_list, del_cmd);
 	}
@@ -79,26 +71,31 @@ static void	handle_cmd(t_shell *minishell)
 	// close(fd2);
 }
 
+void	sigint(int signum)
+{
+	rl_on_new_line();
+	ft_putchar('\n');
+	rl_replace_line("", 0);
+	rl_redisplay();
+	(void)signum;
+}
+
 int	main(int argc, const char **argv, const char **envp)
 {
 	t_shell	minishell;
 
 	(void)argc;
 	(void)argv;
-	// definições de sinais?
 	ft_bzero(&minishell, sizeof(minishell));
 	init_env(&minishell, envp);
+	signal(SIGINT, sigint);
 	signal(SIGQUIT, SIG_IGN);
 	while (!minishell.end)
 		handle_cmd(&minishell);
 	printf("%i\n", minishell.last_return); ///// remover
-	rl_clear_history();			// juntar todos clears e frees em uma só função?
+	rl_clear_history();
 	ft_split_free(&minishell.env);
 	free(minishell.home);
 	free(minishell.pwd);
 	return (minishell.last_return);
 }
-
-
-// CTRL + C = SIGINT
-// CTRL + \ = SIGQUIT

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 13:39:28 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/21 13:22:33 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/22 15:14:21 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,38 +30,59 @@ static int	open_file(char *file_name)
 	return (fd);
 }
 
-static int	here_doc(char *delim)
+static void	sigexit(int signum)
+{
+	(void)signum;
+	ft_putchar('\n');
+	exit(130);
+}
+
+static int	here_doc(t_shell *msh, char *delim)
 {
 	char	*str;
 	char	*actual_delim;
 	int		fildes[2];
+	int		status;
+	int		pid;
 
+	(void)msh;
 	actual_delim = ft_strjoin(delim, "\n");
 	pipe(fildes);
-	while (1)
+	pid = fork();
+	if (pid == 0)
 	{
-		str = get_next_line(0);
-		if (!str)
+		close(fildes[0]);
+		signal(SIGINT, sigexit);
+		while (1)
 		{
-			ft_putstr_fd("minishell: warning: here_document delimited by end-of-file (wanted `", 2);
-			ft_putstr_fd(delim, 2);
-			ft_putendl_fd("`)", 2);
-			break ;
-		}
-		if (!ft_strncmp(str, actual_delim, ft_strlen(actual_delim)))
-		{
+			str = get_next_line(0);
+			if (!str)
+			{
+				ft_putstr_fd("minishell: warning: here_document delimited by end-of-file (wanted `", 2);
+				ft_putstr_fd(delim, 2);
+				ft_putendl_fd("`)", 2);
+				break ;
+			}
+			if (!ft_strncmp(str, actual_delim, ft_strlen(actual_delim)))
+			{
+				free(str);
+				break ;
+			}
+			write(fildes[1], str, ft_strlen(str));
 			free(str);
-			break ;
 		}
-		write(fildes[1], str, ft_strlen(str));
-		free(str);
+		close(fildes[1]);
+		exit(0);
 	}
+	waitpid(pid, &status, WUNTRACED);
+	if (WEXITSTATUS(status) == 130)
+		fildes[0] = -1;
 	close(fildes[1]);
 	free(actual_delim);
 	return (fildes[0]);
 }
 
-int		redirect_input(t_list *input)
+int		redirect_input(t_shell *msh, t_list *input)
 {
 	t_list	*tracker;
 	int		type;
@@ -78,7 +99,7 @@ int		redirect_input(t_list *input)
 		if (type == 1)
 			fd = open_file(file_name);
 		else
-			fd = here_doc(file_name);
+			fd = here_doc(msh, file_name);
 		if (fd < 0)
 			break ;
 		tracker = tracker->next;
@@ -130,8 +151,10 @@ int		redirect_output(t_list *output)
 	return (fd);
 }
 
-void	redirect(t_cmd *cmd, int *redir)
+void	redirect(t_shell *msh, t_cmd *cmd, int *redir)
 {
-	redir[0] = redirect_input(cmd->input);
+	redir[0] = redirect_input(msh, cmd->input);
+	if (redir[0] == -1)
+		return ;
 	redir[1] = redirect_output(cmd->output);
 }

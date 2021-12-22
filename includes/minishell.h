@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/21 13:52:40 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/22 15:12:36 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ t_bool	cmd_error_parser(const char *cmd_line);
 
 char	*single_cmd_parser(t_shell *minishell, char	*str);
 
-void		redirect(t_cmd *cmd, int *redir);
-int	throw_err(char *cmd, int err_n);
+void	redirect(t_shell *msh, t_cmd *cmd, int *redir);
+int		throw_err(char *cmd, int err_n);
 
 void	del_cmd(void *elem);
 t_cmd	*get_cmd(void *elem);
