@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 13:39:28 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/22 15:14:21 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/23 12:24:54 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static int	here_doc(t_shell *msh, char *delim)
 	int		status;
 	int		pid;
 
-	(void)msh;
 	actual_delim = ft_strjoin(delim, "\n");
 	pipe(fildes);
 	pid = fork();
@@ -72,7 +71,7 @@ static int	here_doc(t_shell *msh, char *delim)
 			free(str);
 		}
 		close(fildes[1]);
-		exit(0);
+		free_and_exit(msh, 0);
 	}
 	waitpid(pid, &status, WUNTRACED);
 	if (WEXITSTATUS(status) == 130)

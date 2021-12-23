@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   router.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:53:06 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/22 15:13:42 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/23 13:43:02 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	cmd_exec_pipes(t_shell *minishell, t_cmd *current)
 
 	ret = func_ptr[current->type](minishell, current);
 	write(minishell->ret_fd[1], &ret, sizeof(ret));
-	exit(0);
+	free_and_exit(minishell, 0);
 }
 
 
@@ -89,7 +89,7 @@ static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 	int		pid;
 	int		clone_in;
 	int		redir[2];
-	int		status;
+	int		status = 0;
 
 	ft_bzero(redir, 2 * sizeof(int));
 	clone_in = dup(0);
@@ -105,7 +105,7 @@ static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 			if (redir[0] < 0)
 			{
 				write(msh->ret_fd[1], &redir[0], sizeof(int));
-				exit(130);
+				free_and_exit(msh, 130);
 			}
 			if (redir[0])
 				dup2(redir[0], 0);
