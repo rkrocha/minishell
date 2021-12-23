@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 11:00:46 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/21 13:11:28 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/23 13:50:005 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,31 @@ static void	exec_cmd(t_shell *msh, t_cmd *cmd, int *fd)
 
 	ret_status = 0;
 	close(fd[0]);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	execve(cmd->argv[0], cmd->argv, msh->env);
 	ret_status = throw_err(cmd->argv[0], errno);
 	write(fd[1], &ret_status, sizeof(int));
-	exit (0);
+	free_and_exit(msh, 0);
+}
+
+static int	return_status(int ret_status, int status)
+{
+	int	ret;
+
+	ret = 0;
+	if (ret_status)
+		ret = ret_status;
+	else if (WEXITSTATUS(status))
+		ret = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == 2)
+			ret = 130;
+		else if (WTERMSIG(status) == 3)
+			ret = 131;
+	}
+	return (ret);
 }
 
 int	msh_execve(t_shell *msh, t_cmd *cmd)
@@ -120,9 +141,7 @@ int	msh_execve(t_shell *msh, t_cmd *cmd)
 	waitpid(pid, &status, WUNTRACED);
 	close(fd[1]);
 	read(fd[0], &ret_status, sizeof(int));
-	cmd->return_value = WEXITSTATUS(status);
-	if (ret_status)
-		cmd->return_value = ret_status;
+	cmd->return_value = return_status(ret_status, status);
 	close(fd[0]);
 	return (cmd->return_value);
 }
