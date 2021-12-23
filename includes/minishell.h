@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/22 15:12:36 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/23 11:46:45 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,14 @@ void	redirect(t_shell *msh, t_cmd *cmd, int *redir);
 int		throw_err(char *cmd, int err_n);
 
 void	del_cmd(void *elem);
+void	free_and_exit(t_shell *minishell, int return_value);
 t_cmd	*get_cmd(void *elem);
 
 char	*ft_strjoin_free(char **s1, char const *s2);
 
 t_bool	check_input(void);
+
+
+void	sigint(int signum);
 
 #endif

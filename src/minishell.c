@@ -3,39 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/22 15:15:43 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/23 11:09:247 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	get_prompt(t_shell *minishell)
+void	get_prompt(t_shell *msh)
 {
-	char	*user;
-	char	*host;
-	char	*pwd;
-	char	*dir;
-	char	*home;
+	char	**strs;
 
-	user = get_env(minishell, "LOGNAME");
-	host = get_env(minishell, "NAME");
-	pwd = get_env(minishell, "PWD");
-	home = get_env(minishell, "HOME");
-	if (ft_strncmp(pwd, home, ft_strlen(home) + 1) == 0)
-		dir = ft_strdup("~");
-	else if (ft_strncmp(pwd, "/", 2) == 0)
-		dir = ft_strdup("/");
+	free(msh->prompt);
+	strs = ft_calloc(5, sizeof(char *));
+	strs[0] = get_env(msh, "LOGNAME");
+	strs[1] = get_env(msh, "PWD");
+	strs[2] = get_env(msh, "HOME");
+	if (ft_strncmp(strs[1], strs[2], ft_strlen(strs[2]) + 1) == 0)
+		strs[3] = ft_strdup("~");
+	else if (ft_strncmp(strs[1], "/", 2) == 0)
+		strs[3] = ft_strdup("/");
 	else
-		dir = ft_strjoin("", ft_strrchr(pwd, '/') + 1);
-	printf("[\e[34m%s@%s\e[00m \e[36m%s\e[00m] \e[32m$\e[00m ", user, host, dir);
-	free(user);
-	free(host);
-	free(pwd);
-	free(home);
-	free(dir);
+		strs[3] = ft_strjoin("", ft_strrchr(strs[1], '/') + 1);
+	msh->prompt = ft_strjoin("[\e[34m", strs[0]);
+	msh->prompt = ft_strjoin_free(&msh->prompt, "\e[00m \e[36m");
+	msh->prompt = ft_strjoin_free(&msh->prompt, strs[3]);
+	msh->prompt = ft_strjoin_free(&msh->prompt, "\e[00m] \e[32m$\e[00m ");
+	ft_split_free(&strs);
 }
 
 static void	handle_cmd(t_shell *minishell)
@@ -43,11 +39,10 @@ static void	handle_cmd(t_shell *minishell)
 	char	*cmd_line;
 
 	minishell->end = check_input();
-	minishell->abort_cmd = FALSE;
-	// get_prompt(minishell);
-	cmd_line = readline("\e[32m$\e[00m ");
+	get_prompt(minishell);
+	cmd_line = readline(minishell->prompt);
 	if (!cmd_line)
-		exit(0);
+		free_and_exit(minishell, minishell->last_return);
 	if (!*cmd_line)
 	{
 		free(cmd_line);
@@ -62,13 +57,6 @@ static void	handle_cmd(t_shell *minishell)
 		ft_lstclear(&minishell->cmd_list, del_cmd);
 	}
 	free(cmd_line);
-	// int fd1 = open("/dev/tty", O_RDONLY);
-	// dup2(fd1, 0);
-	// close(fd1);
-	// int fd2 = open("/dev/pts/1", O_WRONLY);
-	// dup2(fd2, 1);
-	// dup2(fd2, 2);
-	// close(fd2);
 }
 
 void	sigint(int signum)
@@ -93,9 +81,5 @@ int	main(int argc, const char **argv, const char **envp)
 	while (!minishell.end)
 		handle_cmd(&minishell);
 	printf("%i\n", minishell.last_return); ///// remover
-	rl_clear_history();
-	ft_split_free(&minishell.env);
-	free(minishell.home);
-	free(minishell.pwd);
-	return (minishell.last_return);
+	free_and_exit(&minishell, minishell.last_return);
 }
