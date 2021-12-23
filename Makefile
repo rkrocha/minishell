@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+         #
+#    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/20 15:13:55 by dpiza            ###   ########.fr        #
+#    Updated: 2021/12/23 15:19:16 by rkochhan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT_DIR 		= ./libft
 LIBFT 			= $(LIBFT_DIR)/libft.a
 
 CC 				= gcc
-CFLAGS 			= -g -Wall -Wextra -Werror $(LEAKCHECK)
+CFLAGS 			= -g -Wall -Wextra -Werror #$(LEAKCHECK)
 LEAKCHECK 		= -fsanitize=address
 LFLAGS 			= -L./libft -lft -lreadline
 IFLAGS			= -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
@@ -107,3 +107,15 @@ norm:
 				@$(NORM) $(SRCS_DIR)/*.c $(INCLUDES_DIR)/*.h
 
 .PHONY:			norm
+
+# **************************************************************************** #
+#                                 VALGRIND                                     #
+# **************************************************************************** #
+
+leaks:
+				valgrind -s --leak-check=full --show-reachable=yes \
+				--show-leak-kinds=all --trace-children=yes \
+				--suppressions=minishell.supp --log-file=valgrind.txt \
+				./minishell
+
+.PHONY:			leaks
