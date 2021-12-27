@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/17 13:15:06 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/27 14:49:25 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 static void	define_type(t_cmd *new_cmd)
 {
-	if (!ft_strncmp(new_cmd->argv[0], "cd", 3))
+	if (!new_cmd->argv[0])
+		new_cmd->type = TYPE_DUMMY;
+	else if (!ft_strncmp(new_cmd->argv[0], "cd", 3))
 		new_cmd->type = TYPE_MINI_CD;
 	else if (!ft_strncmp(new_cmd->argv[0], "echo", 5))
 		new_cmd->type = TYPE_MINI_ECHO;
@@ -45,7 +47,7 @@ static void	cmd_space_parser(char *cmd_line)
 			quote = cmd_line[i];
 		else if (quote != '\0' && cmd_line[i] == quote)
 			quote = '\0';
-		if (quote == '\0' && ft_isspace(cmd_line[i]))
+		if (quote == '\0' && cmd_line[i] != '\n' && ft_isspace(cmd_line[i]))
 			cmd_line[i] = CMD_SEP;
 		i++;
 	}

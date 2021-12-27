@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   router.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:53:06 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/23 13:43:02 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/27 14:56:05 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static void	print_from_pipe(int fd)
 
 static void	cmd_exec_single(t_shell *minishell, t_cmd *current)
 {
-	static int (*const	func_ptr[8])(t_shell *, t_cmd *) = {
+	static int (*const	func_ptr[9])(t_shell *, t_cmd *) = {
 		msh_execve, msh_cd, msh_echo, msh_env,
-		msh_exit, msh_export, msh_pwd, msh_unset};
+		msh_exit, msh_export, msh_pwd, msh_unset, msh_dummy};
 	int					redir[2];
 	int					clone_in;
 	int					clone_out;
@@ -40,6 +40,11 @@ static void	cmd_exec_single(t_shell *minishell, t_cmd *current)
 	if (redir[0] < 0)
 	{
 		minishell->last_return = 130;
+		return ;
+	}
+	if (redir[1] < 0)
+	{
+		minishell->last_return = 1;
 		return ;
 	}
 	if (redir[0] > 0)
@@ -72,9 +77,9 @@ static void	cmd_exec_single(t_shell *minishell, t_cmd *current)
 
 static void	cmd_exec_pipes(t_shell *minishell, t_cmd *current)
 {
-	static int (*const	func_ptr[8])(t_shell *, t_cmd *) = {
+	static int (*const	func_ptr[9])(t_shell *, t_cmd *) = {
 		msh_execve, msh_cd, msh_echo, msh_env,
-		msh_exit, msh_export, msh_pwd, msh_unset};
+		msh_exit, msh_export, msh_pwd, msh_unset, msh_dummy};
 	int					ret;
 
 	ret = func_ptr[current->type](minishell, current);
@@ -106,6 +111,11 @@ static void	cmd_exec_pipes_iter(t_shell *msh, t_list *tracker)
 			{
 				write(msh->ret_fd[1], &redir[0], sizeof(int));
 				free_and_exit(msh, 130);
+			}
+			if (redir[1] < 0)
+			{
+				write(msh->ret_fd[1], &redir[1], sizeof(int));
+				free_and_exit(msh, 1);
 			}
 			if (redir[0])
 				dup2(redir[0], 0);

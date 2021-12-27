@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 13:39:28 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/23 12:24:54 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/23 18:56:59 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,7 @@ int	open_output(char *file_name, int type)
 	int		fd;
 
 	fd = -1;
-	stat(file_name, &buffer);
-	if (buffer.st_mode == 16877)
+	if (!stat(file_name, &buffer) && buffer.st_mode == 16877)
 		throw_err(file_name, -2);
 	else if (access(file_name, F_OK) && !access(file_name, W_OK))
 		throw_err(file_name, -3);

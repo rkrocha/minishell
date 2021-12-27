@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/23 11:46:45 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/27 14:55:37 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define TYPE_MINI_EXPORT	5
 # define TYPE_MINI_PWD		6
 # define TYPE_MINI_UNSET	7
+# define TYPE_DUMMY			8
 
 # define PIPE_SEP	29
 # define CMD_SEP	31
@@ -86,6 +87,7 @@ int		msh_unset(t_shell *minishell, t_cmd *cmd);
 int		msh_cd(t_shell *minishell, t_cmd *cmd);
 int		msh_pwd(t_shell *minishell, t_cmd *cmd);
 int		msh_execve(t_shell *minishell, t_cmd *cmd);
+int		msh_dummy(t_shell *minishell, t_cmd *cmd);
 
 void	cmd_parser(t_shell *minishell, char *cmd);
 void	cmd_router(t_shell *minishell);

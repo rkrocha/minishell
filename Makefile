@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/23 15:19:16 by rkochhan         ###   ########.fr        #
+#    Updated: 2021/12/27 14:55:48 by dpiza            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT_DIR 		= ./libft
 LIBFT 			= $(LIBFT_DIR)/libft.a
 
 CC 				= gcc
-CFLAGS 			= -g -Wall -Wextra -Werror #$(LEAKCHECK)
+CFLAGS 			= -g -Wall -Wextra -Werror $(LEAKCHECK)
 LEAKCHECK 		= -fsanitize=address
 LFLAGS 			= -L./libft -lft -lreadline
 IFLAGS			= -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
@@ -55,6 +55,7 @@ SRCS = 				minishell.c \
 					builtin_unset.c \
 					builtin_cd.c \
 					builtin_pwd.c \
+					builtin_dummy.c \
 					execve.c \
 					get_next_line.c \
 					ft_strjoin_free.c \
