@@ -43,7 +43,7 @@ static void	handle_cmd(t_shell *minishell)
 	cmd_line = readline(minishell->prompt);
 	if (!cmd_line)
 		free_and_exit(minishell, minishell->last_return);
-	if (!*cmd_line)
+	if (!*cmd_line || !ft_strignore(cmd_line, BLANK_SPACES))
 	{
 		free(cmd_line);
 		return ;
@@ -80,6 +80,6 @@ int	main(int argc, const char **argv, const char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (!minishell.end)
 		handle_cmd(&minishell);
-	printf("%i\n", minishell.last_return); ///// remover
+	// printf("%i\n", minishell.last_return); ///// remover
 	free_and_exit(&minishell, minishell.last_return);
 }
