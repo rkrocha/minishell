@@ -86,6 +86,12 @@ static char	*get_cmd_path(t_shell *msh, t_cmd *cmd)
 	return (cmd_path);
 }
 
+void	sigprint(int n)
+{
+	(void)n;
+	printf("Cancelou!!!!!!\n");
+}
+
 static void	exec_cmd(t_shell *msh, t_cmd *cmd, int *fd)
 {
 	int	ret_status;
@@ -93,7 +99,6 @@ static void	exec_cmd(t_shell *msh, t_cmd *cmd, int *fd)
 	ret_status = 0;
 	close(fd[0]);
 	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	execve(cmd->argv[0], cmd->argv, msh->env);
 	ret_status = throw_err(cmd->argv[0], errno);
 	write(fd[1], &ret_status, sizeof(int));
@@ -135,10 +140,16 @@ int	msh_execve(t_shell *msh, t_cmd *cmd)
 	ret_status = 0;
 	if (pipe(fd))
 		ft_putendl(strerror(errno));
+	signal(SIGQUIT, SIG_DFL);
 	pid = fork();
 	if (pid == 0)
 		exec_cmd(msh, cmd, fd);
+	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, WUNTRACED);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == 3)
+		printf("Quit\n");
+	else if (WIFSIGNALED(status) && WTERMSIG(status) == 2)
+		printf("\n");
 	close(fd[1]);
 	read(fd[0], &ret_status, sizeof(int));
 	cmd->return_value = return_status(ret_status, status);
