@@ -1,7 +1,7 @@
 PARSING
 
 Apenas espaços
-$ 
+$
 
 echo          123
 $ 123
@@ -42,57 +42,62 @@ erro
 pwd ||| wc -l
 erro
 
+pwd | | wc -l
+erro
+
+pwd || wc -l
+erro
+
 --------------------
 
 EXPANSAO DE VARIAVEIS
 
-
-"'$HOME'"
+echo "'$HOME'"
 '/home/rafa'
 
-"'"$HOME"'"
+echo "'"$HOME"'"
 '/home/rafa'
 
-'""$HOME'
+echo '""$HOME'
 ""$HOME
 
-$MAIL
+echo $MAIL
 /var/spool/mail/rafa
 
-'$MAIL'
+echo '$MAIL'
 $MAIL
 
-$MAIL$MAIL
+echo $MAIL$MAIL
 /var/spool/mail/rafa/var/spool/mail/rafa
 
-abc"123"
+echo abc"123"
 abc123
 
-abc'123'
+echo abc'123'
 abc123
 
-'abc'123
+echo 'abc'123
 abc123
 
-"abc"123
+echo "abc"123
 abc123
 
-"abc"'123'
+echo "abc"'123'
 abc123
 
-"abc"$MAIL
+echo "abc"$MAIL
 abc/var/spool/mail/rafa
 
-"abc"'$MAIL'
+echo "abc"'$MAIL'
 abc$MAIL
 
-abc"$MAIL"
+echo abc"$MAIL"
 abc/var/spool/mail/rafa
 
-'abc"$MAIL"'
+echo 'abc"$MAIL"'
 abc"$MAIL"
 
-"'$MAIL'"
+echo "'$MAIL'"
 '/var/spool/mail/rafa'
 
 
@@ -104,6 +109,7 @@ $$
 
 echo 123@'$HOME'@123@'"$HOME"'@123@$HOME@123@"'$HOME'"@123@"$HOME"@123
 123@$HOME@123@"$HOME"@123@/home/admin@123@'/home/admin'@123@/home/admin@123
+123@$HOME@123@"$HOME"@123@/home/rafa@123@'/home/rafa'@123@/home/rafa@123
 
 echo ~
 /home/admin
@@ -179,7 +185,9 @@ exit (sem opções)
 exit > 0
 exit = 0
 exit < 0
+
 exit NAN
+minishell: exit: a: numeric argument required
 
 --------------
 
@@ -192,10 +200,15 @@ ls
 ../../../../bin/ls
 
 mkdir (sem argumento)
+/usr/bin/mkdir: missing operand
 
-uset PATH
+unset PATH
 export PATH=/home/admin/42/minishell/tests
+export PATH=/home/rafa/Documents/42cursus/minishell/tests
 ls
+
+export LS=/home/rafa/Documents/42cursus/minishell/tests/ls
+$LS
 
 cat
 abc
@@ -241,22 +254,23 @@ file:	abc
 		abc
 
 echo abc > file > file1
-file: 
+file:
 file1:	abc
 
 echo abc > file > file1 > file2
-file: 
-file1: 
-file1:	abc
+file:
+file1:
+file2:	abc
 
 echo abc > file > file1 >> file2
-file: 
-file1: 
+file:
+file1:
 file2:	abc
 		abc
 
 echo abc >> file2 > file3
-file2: 
+file2:	abc
+		abc
 file3: 	abc
 
 < ../README.md cat > file > file1 > file2
@@ -300,7 +314,7 @@ $
 
 cat << eof | wc -l
 abc
-eof	
+eof
 $ 1
 
 echo abc | cat << eof | cat
@@ -309,7 +323,7 @@ eof
 $ bcd
 
 cat < ../README.md > file | cat < ../README.md >> file
-file: # minishell
+file: # minishell# minishell
 $
 
 --------------
@@ -323,6 +337,18 @@ sai do minishell
 
 Ctrl-\
 não faz nada
+
+
+
+pwd
+
+
+
+
+
+
+
+
 
 
 
