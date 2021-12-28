@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 14:29:06 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/23 13:39:56 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/28 13:24:08 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,32 @@ void	del_cmd(void *elem)
 	ft_lstclear(&cmd->input, free);
 	ft_lstclear(&cmd->output, free);
 	free(cmd);
+}
+
+int	throw_err(char *cmd, int err_n)
+{
+	char	*err;
+	int		ret_no;
+
+	err = ft_strdup("minishell: ");
+	err = ft_strjoin_free(&err, cmd);
+	if (err_n == 0)
+		err = ft_strjoin_free(&err, ": command not found");
+	else if (err_n == -1)
+		err = ft_strjoin_free(&err, ": No such file or directory");
+	else if (err_n == -2)
+		err = ft_strjoin_free(&err, ": Is a directory");
+	else if (err_n == -3)
+		err = ft_strjoin_free(&err, ": Permission denied");
+	else
+	{
+		err = ft_strjoin_free(&err, ": ");
+		err = ft_strjoin_free(&err, strerror(errno));
+	}
+	ft_putendl(err);
+	free (err);
+	ret_no = 126;
+	if (err_n == 0 || err_n == -1)
+		ret_no = 127;
+	return (ret_no);
 }
