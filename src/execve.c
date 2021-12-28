@@ -6,39 +6,11 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 11:00:46 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/23 13:50:005 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/28 13:11:47 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	throw_err(char *cmd, int err_n)
-{
-	char	*err;
-	int		ret_no;
-
-	err = ft_strdup("minishell: ");
-	err = ft_strjoin_free(&err, cmd);
-	if (err_n == 0)
-		err = ft_strjoin_free(&err, ": command not found");
-	else if (err_n == -1)
-		err = ft_strjoin_free(&err, ": No such file or directory");
-	else if (err_n == -2)
-		err = ft_strjoin_free(&err, ": Is a directory");
-	else if (err_n == -3)
-		err = ft_strjoin_free(&err, ": Permission denied");
-	else
-	{
-		err = ft_strjoin_free(&err, ": ");
-		err = ft_strjoin_free(&err, strerror(errno));
-	}
-	ft_putendl(err);
-	free (err);
-	ret_no = 126;
-	if (err_n == 0 || err_n == -1)
-		ret_no = 127;
-	return (ret_no);
-}
 
 static char	*get_path(t_shell *msh, t_cmd *cmd)
 {
@@ -69,7 +41,8 @@ static char	*get_cmd_path(t_shell *msh, t_cmd *cmd)
 	char		*cmd_path;
 	struct stat	buffer;
 
-	if (ft_strncmp(*cmd->argv, "./", 2) == 0)
+	if (ft_strncmp(*cmd->argv, "./", 2) == 0
+		|| ft_strncmp(*cmd->argv, "/", 1) == 0)
 	{
 		stat(cmd->argv[0], &buffer);
 		if (access(cmd->argv[0], F_OK))
@@ -84,12 +57,6 @@ static char	*get_cmd_path(t_shell *msh, t_cmd *cmd)
 	if (!cmd_path)
 		cmd->return_value = throw_err(cmd->argv[0], 0);
 	return (cmd_path);
-}
-
-void	sigprint(int n)
-{
-	(void)n;
-	printf("Cancelou!!!!!!\n");
 }
 
 static void	exec_cmd(t_shell *msh, t_cmd *cmd, int *fd)
@@ -117,9 +84,15 @@ static int	return_status(int ret_status, int status)
 	else if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == 2)
+		{
+			printf("\n");
 			ret = 130;
+		}
 		else if (WTERMSIG(status) == 3)
+		{
+			printf("Quit\n");
 			ret = 131;
+		}
 	}
 	return (ret);
 }
@@ -146,10 +119,6 @@ int	msh_execve(t_shell *msh, t_cmd *cmd)
 		exec_cmd(msh, cmd, fd);
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, WUNTRACED);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == 3)
-		printf("Quit\n");
-	else if (WIFSIGNALED(status) && WTERMSIG(status) == 2)
-		printf("\n");
 	close(fd[1]);
 	read(fd[0], &ret_status, sizeof(int));
 	cmd->return_value = return_status(ret_status, status);
