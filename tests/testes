@@ -244,7 +244,7 @@ $ abc
 cat < ../Makefile << eof < ../README.md
 abc
 eof
-$ # minishell
+# minishell $
 
 echo abc > file
 file:	abc
