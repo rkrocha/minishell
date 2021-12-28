@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 14:04:03 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/16 13:59:25 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/28 14:57:16 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	attribute_quotes(int *quote1, int value1, int *quote2, int value2)
 {
 	*quote1 = value1;
-	*quote2 = value2; ////   esses nomes passam na norma?
+	*quote2 = value2;
 }
 
 int	is_inquotes(char *str, char *expansion)

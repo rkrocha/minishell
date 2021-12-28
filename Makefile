@@ -6,7 +6,7 @@
 #    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/28 10:11:00 by rkochhan         ###   ########.fr        #
+#    Updated: 2021/12/28 14:51:32 by rkochhan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRCS = 				minishell.c \
 					parser_error.c \
 					parser_utils.c \
 					router.c \
+					router_pipes.c \
 					utils.c \
 					fd_utils.c \
 					env_manager.c \
@@ -59,7 +60,8 @@ SRCS = 				minishell.c \
 					execve.c \
 					get_next_line.c \
 					ft_strjoin_free.c \
-					redirect.c
+					redirect.c \
+					redirect_heredoc.c
 
 OBJS 			= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.c=.o)))
 

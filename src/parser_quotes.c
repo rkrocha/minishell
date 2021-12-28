@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 11:04:02 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/17 13:29:43 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/28 14:55:27 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ void	cmd_quotes_parser(t_cmd *cmd)
 	argv = cmd->argv;
 	while (*argv)
 	{
-		// printf("ORIGINAL_ARG: %s\n", *argv); //////////
 		arg_quotes_parser(*argv);
-		// printf("UNQUOTED_ARG: %s\n\n", *argv); ////////
 		argv++;
 	}
 }

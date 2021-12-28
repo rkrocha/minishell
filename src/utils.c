@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 14:29:06 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/28 13:24:08 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/28 13:28:21 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,13 @@ int	throw_err(char *cmd, int err_n)
 	if (err_n == 0 || err_n == -1)
 		ret_no = 127;
 	return (ret_no);
+}
+
+void	sigint(int signum)
+{
+	rl_on_new_line();
+	ft_putchar('\n');
+	rl_replace_line("", 0);
+	rl_redisplay();
+	(void)signum;
 }
