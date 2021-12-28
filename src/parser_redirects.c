@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 11:46:34 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/17 13:33:38 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/28 13:17:27 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ char	*divide_redirects(char *cmd)
 	new_cmd = malloc(new_size * sizeof(char));
 	reader = 0;
 	printer = 0;
-	// printf("old cmd: %s // %d\n", cmd, new_size);
 	while (cmd[reader])
 	{
 		if (ft_strchr("<>", cmd[reader]) && !is_inquotes(cmd, &cmd[reader]))
@@ -60,7 +59,6 @@ char	*divide_redirects(char *cmd)
 		new_cmd[printer++] = cmd[reader++];
 	}
 	new_cmd[printer] = '\0';
-	// printf("new cmd: %s\n", new_cmd);
 	return (new_cmd);
 }
 
@@ -123,39 +121,4 @@ void	cmd_redirects_parser(t_cmd *cmd)
 		i++;
 	}
 	cmd->argc = cat_argv(cmd->argc, cmd->argv);
-
-
-
-	// t_list	*tracker;
-	// printf("Argc: %i\n", cmd->argc);
-	// printf("Input:\n");
-	// tracker = cmd->input;
-	// while (tracker)
-	// {
-	// 	printf("%s\n", (char *)tracker->content);
-	// 	tracker = tracker->next;
-	// }
-	// printf("\nOutput:\n");
-	// tracker = cmd->output;
-	// while (tracker)
-	// {
-	// 	printf("%s\n", (char *)tracker->content);
-	// 	tracker = tracker->next;
-	// }
-	// printf("______________\n");
 }
-
-// 2EOF
-// 1"file.txt"
-// <<< redireciona string para input: fora do escopo (erro)
-
-/*
-**	arg por arg em argv: buscar redirect
-**		colher informações e checar erros
-**	Se não tiver erros, remover args do argv que são redirects ou args de redirs
-**	Atualizar o argc
-
-
-** TIRAR AS ASPAS
-** CHECAR ARG NULO
-*/
