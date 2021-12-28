@@ -6,7 +6,7 @@
 #    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2021/12/28 14:51:32 by rkochhan         ###   ########.fr        #
+#    Updated: 2021/12/28 15:20:53 by rkochhan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -118,7 +118,7 @@ norm:
 leaks:			$(NAME)
 				valgrind -s --leak-check=full --show-reachable=yes \
 				--show-leak-kinds=all --trace-children=yes --track-fds=yes\
-				--suppressions=minishell.supp --log-file=valgrind.txt \
+				--suppressions=tests/readline.supp --log-file=valgrind.txt \
 				./minishell
 
 .PHONY:			leaks
