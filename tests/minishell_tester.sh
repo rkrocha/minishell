@@ -11,16 +11,16 @@ pass=0
 
 test_ok() # $1: comando de teste	$2:
 {
-	echo $@
+	# echo -e $@
 
-	result=$(echo "$@" | $MINISHELL | head -n 2 | tail -n 1)
-	expected=$(echo "$@" | bash)
+	result=$(echo -e "$@" | $MINISHELL | tail -n +2)
+	expected=$(echo -e "$@" | bash)
 
-	echo $result
-	echo $expected
+	# echo $result
+	# echo $expected
 
 	assert_eq "$result" "$expected" "[KO with cmd: $1]" && ((++pass)) && return
-((++fail))
+	((++fail))
 }
 
 test_ok 'echo' '123'
@@ -38,7 +38,7 @@ test_ok 'cd ../samples'
 test_ok 'cd ~'
 test_ok 'cd .. | pwd'
 
-# test_ok
+test_ok 'export abc=123\nenv | grep abc'
 
 
 
