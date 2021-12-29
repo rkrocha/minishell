@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   router_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 13:31:53 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/28 14:36:49 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/29 14:23:17 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static void	cmd_exec_pipes(t_shell *minishell, t_cmd *current)
 
 	ret = func_ptr[current->type](minishell, current);
 	write(minishell->ret_fd[1], &ret, sizeof(ret));
+	close(minishell->ret_fd[1]);
+	close(minishell->ret_fd[0]);
 	free_and_exit(minishell, 0);
 }
 
@@ -41,11 +43,15 @@ static void	exec_in_child_process(t_shell *msh, t_cmd *current, int *redir)
 	if (redir[0] < 0)
 	{
 		write(msh->ret_fd[1], &redir[0], sizeof(int));
+		close(msh->ret_fd[0]);
+		close(msh->ret_fd[1]);
 		free_and_exit(msh, 130);
 	}
 	if (redir[1] < 0)
 	{
 		write(msh->ret_fd[1], &redir[1], sizeof(int));
+		close(msh->ret_fd[0]);
+		close(msh->ret_fd[1]);
 		free_and_exit(msh, 1);
 	}
 	if (redir[0])
