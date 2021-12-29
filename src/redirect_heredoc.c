@@ -3,20 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 14:40:18 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/28 14:50:53 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/29 13:01:17 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	sig_free(t_shell *msh)
+{
+	static t_shell	*ptr;
+
+	if (msh)
+		ptr = msh;
+	else
+		free_and_exit(ptr, 130);
+}
+
 static void	sigexit(int signum)
 {
 	(void)signum;
 	ft_putchar('\n');
-	exit(130);
+	sig_free(NULL);
 }
 
 static void	error_eof(char *delim)
@@ -32,6 +42,7 @@ static void	here_doc_read(t_shell *msh, int *fildes, char *delim)
 	char	*str;
 
 	close(fildes[0]);
+	sig_free(msh);
 	signal(SIGINT, sigexit);
 	while (1)
 	{
