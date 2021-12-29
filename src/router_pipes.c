@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 13:31:53 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/29 14:23:17 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/29 15:29:59 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	fd_close_restore(t_shell *msh, int *redir, int clone_in)
 	close(msh->ret_fd[0]);
 	close(msh->ret_fd[1]);
 	close(redir[0]);
+	close(redir[1]);
 	dup2(clone_in, 0);
 	close(clone_in);
 }
@@ -30,10 +31,10 @@ static void	cmd_exec_pipes(t_shell *minishell, t_cmd *current)
 		msh_exit, msh_export, msh_pwd, msh_unset, msh_dummy};
 	int					ret;
 
+	close(minishell->ret_fd[0]);
 	ret = func_ptr[current->type](minishell, current);
 	write(minishell->ret_fd[1], &ret, sizeof(ret));
 	close(minishell->ret_fd[1]);
-	close(minishell->ret_fd[0]);
 	free_and_exit(minishell, 0);
 }
 
@@ -59,8 +60,8 @@ static void	exec_in_child_process(t_shell *msh, t_cmd *current, int *redir)
 	if (!redir[1])
 		redir[1] = msh->data_fd[1];
 	dup2(redir[1], 1);
-	close(msh->data_fd[0]);
 	close(msh->data_fd[1]);
+	close(msh->data_fd[0]);
 	cmd_exec_pipes(msh, current);
 }
 
@@ -70,10 +71,8 @@ static void	pipes_handler(t_shell *msh, t_list *tracker, int status)
 		msh->last_return = 130;
 	if (msh->last_return != 130 && tracker->next
 		&& !((t_cmd *)tracker->next->content)->input)
-	{
 		dup2(msh->data_fd[0], 0);
-		close(msh->data_fd[0]);
-	}
+	close(msh->data_fd[0]);
 	close(msh->data_fd[1]);
 }
 

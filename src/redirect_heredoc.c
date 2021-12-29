@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 14:40:18 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/29 13:01:17 by dpiza            ###   ########.fr       */
+/*   Updated: 2021/12/29 15:27:36 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ int	here_doc(t_shell *msh, char *delim)
 		here_doc_read(msh, fildes, delim);
 	waitpid(pid, &status, WUNTRACED);
 	if (WEXITSTATUS(status) == 130)
+	{
+		close(fildes[0]);
 		fildes[0] = -1;
+	}
 	close(fildes[1]);
 	return (fildes[0]);
 }
