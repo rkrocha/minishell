@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 14:18:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/12 13:59:11 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/29 11:23:30 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,7 @@ int	msh_export(t_shell *minishell, t_cmd *cmd)
 	if (fail_count)
 		fail_count = 1;
 	cmd->return_value = fail_count;
+	while (sort_env(minishell) != TRUE)
+		;
 	return (fail_count);
 }

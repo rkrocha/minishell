@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/28 15:17:52 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/29 14:26:59 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	init_env(t_shell *minishell, const char **envp);
 int		search_env(t_shell *minishell, const char *var);
 int		env_len(t_shell *minishell);
 char	*get_env(t_shell *minishell, const char *var);
+t_bool	sort_env(t_shell *msh);
 
 /*
 ** builtin_*.c:
@@ -138,8 +139,10 @@ int		here_doc(t_shell *msh, char *delim);
 void	del_cmd(void *elem);
 void	free_and_exit(t_shell *minishell, int return_value);
 int		throw_err(char *cmd, int err_n);
-char	*ft_strjoin_free(char **s1, char const *s2);
 void	sigint(int signum);
+int		ft_strccmp(const char *s1, const char *s2, char c);
+
+char	*ft_strjoin_free(char **s1, char const *s2);
 
 /*
 ** fd_utils.c:

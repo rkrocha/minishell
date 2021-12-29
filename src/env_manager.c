@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:55:10 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/12 13:41:31 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/29 14:22:02 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,46 @@ int	search_env(t_shell *minishell, const char *var)
 	return (-1);
 }
 
+t_bool	sort_env(t_shell *msh)
+{
+	int		i;
+	t_bool	end_of_sort;
+
+	i = 0;
+	end_of_sort = TRUE;
+	while (msh->env[i])
+	{
+		if (msh->env[i + 1]
+			&& ft_strccmp(msh->env[i], msh->env[i + 1], '=') > 0)
+		{
+			end_of_sort = FALSE;
+			ft_strswap(&msh->env[i], &msh->env[i + 1]);
+		}
+		i++;
+	}
+	return (end_of_sort);
+}
+
 void	init_env(t_shell *minishell, const char **envp)
 {
 	int	i;
+	int	j;
 
 	minishell->env = (char **)ft_calloc(ENV_SIZE, sizeof(char *));
-	i = -1;
-	while (envp[++i])
-		minishell->env[i] = ft_strdup(envp[i]);
+	i = 0;
+	j = 0;
+	while (envp[i])
+	{
+		if (!ft_strnstr(envp[i], "_WORKSPACE_",
+				ft_strchr(envp[i], '=') - &envp[i][0]))
+		{
+			minishell->env[j] = ft_strdup(envp[i]);
+			j++;
+		}
+		i++;
+	}
+	while (sort_env(minishell) != TRUE)
+		;
 	minishell->home = get_env(minishell, "HOME");
 	minishell->pwd = get_env(minishell, "PWD");
 }

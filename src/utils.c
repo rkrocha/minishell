@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 14:29:06 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/28 13:28:21 by rkochhan         ###   ########.fr       */
+/*   Updated: 2021/12/29 14:23:46 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,28 @@ void	sigint(int signum)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	(void)signum;
+}
+
+int	ft_strccmp(const char *s1, const char *s2, char c)
+{
+	size_t				i;
+	const unsigned char	*s1cmp;
+	const unsigned char	*s2cmp;
+
+	i = 0;
+	s1cmp = (unsigned char *)s1;
+	s2cmp = (unsigned char *)s2;
+	while (s1cmp[i] && s2cmp[i])
+	{
+		if (s1cmp[i] == c)
+			return (-1);
+		if (s2cmp[i] == c)
+			return (1);
+		if (s1cmp[i] != s2cmp[i])
+			return (s1cmp[i] - s2cmp[i]);
+		i++;
+	}
+	if (s1cmp[i] != s2cmp[i])
+		return (s1cmp[i] - s2cmp[i]);
+	return (0);
 }
