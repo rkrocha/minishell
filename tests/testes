@@ -189,6 +189,9 @@ exit < 0
 exit NAN
 minishell: exit: a: numeric argument required
 
+exit 1 2
+minishell: exit: too many arguments
+
 --------------
 
 EXECVE
@@ -207,7 +210,9 @@ export PATH=/home/admin/42/minishell/tests
 export PATH=/home/rafa/Documents/42cursus/minishell/tests
 ls
 
-export LS=/home/rafa/Documents/42cursus/minishell/tests/ls
+unset HOME
+
+export LS=$CURSUS42/minishell/tests/ls
 $LS
 
 cat
@@ -328,7 +333,9 @@ $
 
 --------------
 
-# Sinais
+# SINAIS
+
+NO PROMPT:
 Ctrl-C
 nova linha
 
@@ -338,17 +345,27 @@ sai do minishell
 Ctrl-\
 não faz nada
 
-
-
-pwd
-
-
+Ctrl-C nova linha com novo prompt quando já tem texto na linha
+Ctrl-D e Ctrl-\ não fazem nada quando já tem texto na linha
 
 
 
+NO HEREDOC:
+Ctrl-C sai do comando, imprime nova linha com novo prompt
+Ctrl-D  imprime erro, imprime resultado do comando
+Ctrl-\ não faz nada
 
 
 
+NO INPUT:
+Ctrl-C sai do comando, imprime nova linha com novo prompt
+Ctrl-D encerra o input, imprime nova linha com novo prompt
+Ctrl-\ Encerra o input, Core dump (sqn)
+
+
+
+
+Testar env cheio
 
 
 
