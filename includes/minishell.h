@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/29 14:26:59 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/03 11:55:28 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <errno.h>
 # include <signal.h>
 
-# define ENV_SIZE	256
+# define BASE_ENV_SIZE	64
 
 # define TYPE_EXECVE		0
 # define TYPE_MINI_CD		1
@@ -71,6 +71,7 @@ typedef struct s_cmd
 */
 typedef struct s_shell
 {
+	int		env_size;
 	char	**env;
 	char	*pwd;
 	char	*prompt;
@@ -102,6 +103,8 @@ int		msh_export(t_shell *minishell, t_cmd *cmd);
 int		msh_pwd(t_shell *minishell, t_cmd *cmd);
 int		msh_unset(t_shell *minishell, t_cmd *cmd);
 int		msh_dummy(t_shell *minishell, t_cmd *cmd);
+
+void	env_realloc(t_shell *msh);
 
 /*
 ** execve.c:

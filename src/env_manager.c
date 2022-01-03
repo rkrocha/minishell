@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:55:10 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/29 14:22:02 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/03 11:50:31 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ void	init_env(t_shell *minishell, const char **envp)
 	int	i;
 	int	j;
 
-	minishell->env = (char **)ft_calloc(ENV_SIZE, sizeof(char *));
+	minishell->env = (char **)ft_calloc(BASE_ENV_SIZE, sizeof(char *));
+	minishell->env_size = BASE_ENV_SIZE;
 	i = 0;
 	j = 0;
 	while (envp[i])
@@ -96,6 +97,8 @@ void	init_env(t_shell *minishell, const char **envp)
 		if (!ft_strnstr(envp[i], "_WORKSPACE_",
 				ft_strchr(envp[i], '=') - &envp[i][0]))
 		{
+			if (j == minishell->env_size - 1)
+				env_realloc(minishell);
 			minishell->env[j] = ft_strdup(envp[i]);
 			j++;
 		}

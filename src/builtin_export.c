@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 14:18:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/29 11:23:30 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/03 11:54:13 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,8 @@ static int	save_var(t_shell *minishell, char *content)
 	free(var_name);
 	if (var_index == -1)
 		var_index = env_len(minishell);
-	if (var_index == ENV_SIZE - 1)
-	{
-		ft_putendl_fd("minishell: export: full environment", 2);
-		return (1);
-	}
+	if (var_index == minishell->env_size - 1)
+		env_realloc(minishell);
 	free(minishell->env[var_index]);
 	minishell->env[var_index] = ft_strdup(content);
 	return (0);
@@ -64,6 +61,17 @@ static void	print_vars(t_shell *minishell)
 		ft_putendl_fd(minishell->env[i], 1);
 		i++;
 	}
+}
+
+void	env_realloc(t_shell *msh)
+{
+	char	**new_env;
+
+	new_env = (char **)ft_calloc(msh->env_size + BASE_ENV_SIZE, sizeof(char *));
+	ft_memcpy(new_env, msh->env, msh->env_size * sizeof(char *));
+	msh->env_size += BASE_ENV_SIZE;
+	free(msh->env);
+	msh->env = new_env;
 }
 
 int	msh_export(t_shell *minishell, t_cmd *cmd)
