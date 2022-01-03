@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 13:31:53 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/29 15:29:59 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/03 11:57:16 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static void	pipes_handler(t_shell *msh, t_list *tracker, int status)
 	if (msh->last_return != 130 && tracker->next
 		&& !((t_cmd *)tracker->next->content)->input)
 		dup2(msh->data_fd[0], 0);
-	close(msh->data_fd[0]);
 	close(msh->data_fd[1]);
 }
 
