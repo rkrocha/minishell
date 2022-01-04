@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+         #
+#    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2022/01/03 10:36:38 by dpiza            ###   ########.fr        #
+#    Updated: 2022/01/04 13:33:07 by rkochhan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRCS = 				minishell.c \
 					parser_quotes.c \
 					parser_error.c \
 					parser_utils.c \
+					parser_wildcard_bonus.c \
 					router.c \
 					router_pipes.c \
 					utils.c \

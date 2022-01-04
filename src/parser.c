@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/28 15:11:57 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/04 11:12:29 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	cmd_parser(t_shell *minishell, char *cmd_line)
 		cmd_var_parser(minishell, new_cmd);
 		cmd_home_expand(minishell, new_cmd);
 		cmd_redirects_parser(new_cmd);
+		cmd_wildcard_parser(minishell, new_cmd);
 		cmd_quotes_parser(new_cmd);
 		define_type(new_cmd);
 		ft_lstadd_back(&minishell->cmd_list, ft_lstnew(new_cmd));

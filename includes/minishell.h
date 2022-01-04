@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/03 11:55:28 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/04 13:33:23 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <unistd.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <dirent.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -117,12 +119,14 @@ int		msh_execve(t_shell *minishell, t_cmd *cmd);
 void	cmd_parser(t_shell *minishell, char *cmd);
 void	cmd_home_expand(t_shell *minishell, t_cmd *cmd);
 void	cmd_redirects_parser(t_cmd *cmd);
+void	cmd_wildcard_parser(t_shell *msh, t_cmd *new_cmd);
 void	cmd_quotes_parser(t_cmd *cmd);
 void	arg_quotes_parser(char *arg);
 t_bool	cmd_error_parser(const char *cmd_line);
 char	*divide_redirects(char *cmd_line);
 char	*single_cmd_parser(t_shell *minishell, char	*str);
 int		is_inquotes(char *str, char *expansion);
+
 
 /*
 ** router*.c:
