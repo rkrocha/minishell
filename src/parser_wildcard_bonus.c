@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_wildcard_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 10:53:49 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/04 14:51:45 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/05 14:43:31 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,69 @@ static t_bool	matrix_sort(char **matrix)
 	return (end_of_sort);
 }
 
-static void	compare_and_expand(char **exp_str, char *name, char *exp)
+static t_bool	is_valid_end(char *name, char *needle)
 {
-	(void)exp;
+	int		needle_len;
+	int		name_len;
+
+	needle_len = ft_strlen(needle);
+	name_len = ft_strlen(name);
+	if (needle_len > name_len)
+		return (FALSE);
+	if (ft_strncmp(&name[name_len - needle_len], needle, needle_len) == 0)
+		return (TRUE);
+	return (FALSE);
+}
+
+static t_bool	is_valid_expansion(char *name, char *exp)
+{
+	int		i;
+	int		j;
+	char	*needle;
+	t_bool	is_valid;
+
+	i = 0;
+	j = 0;
+	needle = NULL;
+	is_valid = TRUE;
+	while (is_valid && exp[j])
+	{
+		if (exp[j] != '*' && ft_strchr(&exp[j], '*'))
+			needle = ft_substr(exp, j, ft_strchr(&exp[j], '*') - &exp[j]);
+		else if (exp[j] != '*' && !ft_strchr(&exp[j], '*'))
+			needle = ft_strdup(&exp[j]);
+
+
+		if (j == 0 && needle && !ft_strncmp(name, needle, ft_strlen(needle)))
+			i += ft_strlen(needle);
+		else if (j > 0 && needle && ft_strchr(&exp[j], '*') && ft_strnstr(&name[i], needle, ft_strlen(&name[i])))
+			i += ft_strnstr(&name[i], needle, ft_strlen(&name[i])) - &name[i] + ft_strlen(needle);
+		else if (j > 0 && needle && !ft_strchr(&exp[j], '*'))
+		{
+			if (!is_valid_end(&name[i], needle))
+				is_valid = FALSE;
+		}
+		else if (needle)
+			is_valid = FALSE;
+
+		if (needle)
+			j += ft_strlen(needle);
+		else if (ft_strignore(&exp[j], "*"))
+			j += ft_strignore(&exp[j], "*") - &exp[j];
+		else
+			j = ft_strlen(exp);
+
+		ft_strdel(&needle);
+	}
+	return (is_valid);
+}
+
+static void	wildcard_expand(char **exp_str, char *name, char *exp)
+{
 
 
 
-	if (name[0] == '.')
+	if (name[0] == '.' && exp[0] != '.')
 		return ;
 	if (!*exp_str)
 		*exp_str = ft_strdup(name);
@@ -97,9 +153,13 @@ static char	**get_expansions(t_shell *msh, char *expansion)
 	ret = readdir(folder);
 	while (ret)
 	{
-		compare_and_expand(&expansion_str, ret->d_name, expansion);
+		if (is_valid_expansion(ret->d_name, expansion))
+			wildcard_expand(&expansion_str, ret->d_name, expansion);
 		ret = readdir(folder);
 	}
+	if (!expansion_str)
+		expansion_str = ft_strdup(expansion);
+	// printf("Exp_str: %s\n", expansion_str);
 	expansion_args = ft_split(expansion_str, '\30');
 	free(expansion_str);
 	closedir(folder);
