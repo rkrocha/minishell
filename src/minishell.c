@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/03 13:50:02 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/06 13:22:01 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ void	get_prompt(t_shell *msh)
 
 	free(msh->prompt);
 	strs = ft_calloc(5, sizeof(char *));
-	strs[0] = get_env(msh, "STUDENT_LOGIN");
+	strs[0] = get_env(msh, "LOGNAME");
+	if (strs[0][0] == '\0')
+		strs[0] = get_env(msh, "STUDENT_LOGIN");
 	strs[1] = get_env(msh, "PWD");
 	strs[2] = get_env(msh, "HOME");
 	if (ft_strncmp(strs[1], strs[2], ft_strlen(strs[2]) + 1) == 0)
