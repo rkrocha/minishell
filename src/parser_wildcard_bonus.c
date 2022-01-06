@@ -6,25 +6,11 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 10:53:49 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/06 13:40:25 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/06 14:31:36 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static t_bool	is_valid_end(char *name, char *needle)
-{
-	int		needle_len;
-	int		name_len;
-
-	needle_len = ft_strlen(needle);
-	name_len = ft_strlen(name);
-	if (needle_len > name_len)
-		return (FALSE);
-	if (ft_strncmp(&name[name_len - needle_len], needle, needle_len) == 0)
-		return (TRUE);
-	return (FALSE);
-}
 
 static char	**get_expansions(t_shell *msh, char *expansion)
 {

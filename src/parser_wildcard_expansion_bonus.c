@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 13:36:05 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/06 14:17:05 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/06 14:31:43 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,20 @@ static int	increment_expansion(char *needle, char *exp, int j)
 		return (j + ft_strignore(&exp[j], "*") - &exp[j]);
 	else
 		return (ft_strlen(exp));
+}
+
+static t_bool	is_valid_end(char *name, char *needle)
+{
+	int		needle_len;
+	int		name_len;
+
+	needle_len = ft_strlen(needle);
+	name_len = ft_strlen(name);
+	if (needle_len > name_len)
+		return (FALSE);
+	if (ft_strncmp(&name[name_len - needle_len], needle, needle_len) == 0)
+		return (TRUE);
+	return (FALSE);
 }
 
 t_bool	is_valid_expansion(char *name, char *exp)
