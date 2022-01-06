@@ -369,3 +369,50 @@ Testar env cheio
 
 
 
+--------------
+BONUS: WILDCARD
+
+
+cd tes*
+
+echo *
+
+echo **
+
+echo *.sh
+
+echo *a*
+
+echo *a*e*
+
+echo *a*e*p
+
+echo r***p
+
+echo j*o*
+
+echo *t
+
+echo *t*t
+
+echo *t*t*
+
+echo .*
+
+echo *e
+
+echo .*e
+
+echo *.*
+
+
+inválidos:
+echo x*
+
+echo *x
+
+echo a*x
+
+echo x*s
+
+echo .*x
