@@ -6,7 +6,7 @@
 #    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2022/01/04 13:33:07 by rkochhan         ###   ########.fr        #
+#    Updated: 2022/01/06 13:39:27 by rkochhan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,8 @@ SRCS = 				minishell.c \
 					parser_error.c \
 					parser_utils.c \
 					parser_wildcard_bonus.c \
+					parser_wildcard_expansion_bonus.c \
+					parser_wildcard_utils_bonus.c \
 					router.c \
 					router_pipes.c \
 					utils.c \

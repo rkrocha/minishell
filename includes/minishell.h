@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/04 13:33:23 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/06 13:41:33 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,14 +119,12 @@ int		msh_execve(t_shell *minishell, t_cmd *cmd);
 void	cmd_parser(t_shell *minishell, char *cmd);
 void	cmd_home_expand(t_shell *minishell, t_cmd *cmd);
 void	cmd_redirects_parser(t_cmd *cmd);
-void	cmd_wildcard_parser(t_shell *msh, t_cmd *new_cmd);
 void	cmd_quotes_parser(t_cmd *cmd);
 void	arg_quotes_parser(char *arg);
 t_bool	cmd_error_parser(const char *cmd_line);
 char	*divide_redirects(char *cmd_line);
 char	*single_cmd_parser(t_shell *minishell, char	*str);
 int		is_inquotes(char *str, char *expansion);
-
 
 /*
 ** router*.c:
@@ -156,5 +154,15 @@ char	*ft_strjoin_free(char **s1, char const *s2);
 */
 t_bool	check_input(void);
 void	print_from_pipe(int fd);
+
+/*
+** parser_*_bonus.c:
+*/
+void	cmd_wildcard_parser(t_shell *msh, t_cmd *new_cmd);
+t_bool	is_valid_expansion(char *name, char *exp);
+void	wildcard_expand(char **exp_str, char *name, char *exp);
+int		matrix_len(char **matrix);
+int		ft_strccmp_caseless(const char *s1, const char *s2, char c);
+t_bool	matrix_sort(char **matrix);
 
 #endif
