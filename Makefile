@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/04 10:24:56 by rkochhan          #+#    #+#              #
-#    Updated: 2022/01/06 13:39:27 by rkochhan         ###   ########.fr        #
+#    Updated: 2022/01/07 10:33:38 by dpiza            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT_DIR 		= ./libft
 LIBFT 			= $(LIBFT_DIR)/libft.a
 
 CC 				= gcc
-CFLAGS 			= -g -Wall -Wextra -Werror $(LEAKCHECK)
+CFLAGS 			= -Wall -Wextra -Werror #$(LEAKCHECK)
 LEAKCHECK 		= -fsanitize=address
 LFLAGS 			= -L./libft -lft -lreadline
 IFLAGS			= -I$(LIBFT_DIR) -I$(INCLUDES_DIR)
