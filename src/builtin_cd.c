@@ -3,32 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 13:27:02 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/17 12:49:37 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/07 14:15:42 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char	*alloc_cwd(void)
+{
+	char	*buffer;
+	int		size;
+
+	size = 256;
+	buffer = malloc(size * sizeof(char));
+	while(!getcwd(buffer, size))
+	{
+		size += 256;
+		free(buffer);
+		buffer = malloc(size * sizeof(char));
+	}
+	return (buffer);
+}
+
 static void	update_env_pwd(t_shell *minishell)
 {
-	char	buffer[128];
 	t_cmd	*update_pwd;
 	char	*old_pwd_var;
+	char	*current_pwd;
 
+	current_pwd = alloc_cwd();
 	old_pwd_var = get_env(minishell, "PWD");
 	update_pwd = malloc(sizeof(t_cmd));
 	ft_bzero(update_pwd, sizeof(t_cmd));
 	update_pwd->argv = malloc(4 * sizeof(char *));
 	update_pwd->argv[0] = ft_strdup("export");
-	update_pwd->argv[1] = ft_strjoin("PWD=", getcwd(buffer, 128));
+	update_pwd->argv[1] = ft_strjoin("PWD=", current_pwd);
 	update_pwd->argv[2] = ft_strjoin("OLDPWD=", old_pwd_var);
 	update_pwd->argv[3] = NULL;
 	msh_export(minishell, update_pwd);
 	free(minishell->pwd);
-	minishell->pwd = ft_strdup(buffer);
+	minishell->pwd = current_pwd;
 	free(old_pwd_var);
 	del_cmd(update_pwd);
 }
