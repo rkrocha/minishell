@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 10:20:40 by rkochhan          #+#    #+#             */
-/*   Updated: 2021/12/15 14:39:36 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/07 14:14:45 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*copy_middle(char **str, char *tracker, int size)
 	return (*str);
 }
 
-char	*single_cmd_parser(t_shell *minishell, char	*str)
+char	*single_arg_parser(t_shell *minishell, char	*str)
 {
 	char	*new_str;
 	char	*expansion;

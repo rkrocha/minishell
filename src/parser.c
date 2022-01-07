@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 13:36:10 by dpiza             #+#    #+#             */
-/*   Updated: 2022/01/04 11:12:29 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/04 11:121:29 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	cmd_var_parser(t_shell *minishell, t_cmd *cmd)
 	{
 		if (!ft_strchr(cmd->argv[i], '$'))
 			continue ;
-		cmd_expanded = single_cmd_parser(minishell, cmd->argv[i]);
+		cmd_expanded = single_arg_parser(minishell, cmd->argv[i]);
 		free(cmd->argv[i]);
 		cmd->argv[i] = cmd_expanded;
 	}

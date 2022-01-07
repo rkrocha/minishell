@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/06 13:41:33 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/07 14:14:45 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	cmd_quotes_parser(t_cmd *cmd);
 void	arg_quotes_parser(char *arg);
 t_bool	cmd_error_parser(const char *cmd_line);
 char	*divide_redirects(char *cmd_line);
-char	*single_cmd_parser(t_shell *minishell, char	*str);
+char	*single_arg_parser(t_shell *minishell, char	*str);
 int		is_inquotes(char *str, char *expansion);
 
 /*

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_wildcard_expansion_bonus.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 13:36:05 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/06 14:31:43 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/07 14:17:39 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ t_bool	is_valid_expansion(char *name, char *exp)
 			i += ft_strlen(needle);
 		else if (j > 0 && needle && ft_strchr(&exp[j], '*')
 			&& ft_strnstr(&name[i], needle, ft_strlen(&name[i])))
-			i += ft_strnstr(&name[i], needle,
-					ft_strlen(&name[i])) - &name[i] + ft_strlen(needle);
+			i += ft_strnstr(&name[i], needle, ft_strlen(&name[i])) - &name[i]
+				+ ft_strlen(needle);
 		else if (j > 0 && needle && !ft_strchr(&exp[j], '*'))
 			is_valid = is_valid_end(&name[i], needle);
 		else if (needle)
