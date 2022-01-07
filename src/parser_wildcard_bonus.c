@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_wildcard_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 10:53:49 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/06 14:31:36 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/07 10:26:11 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ static int	arg_wildcard_parser(t_shell *msh, t_cmd *cmd, int current_arg)
 	char	**new_argv;
 	char	**expansion_args;
 	int		expansion_len;
+	int		original_len;
 
+	original_len = matrix_len(cmd->argv);
 	expansion_args = get_expansions(msh, cmd->argv[current_arg]);
 	expansion_len = matrix_len(expansion_args);
-	new_argv = (char **)ft_calloc(expansion_len + matrix_len(cmd->argv) + 1,
+	new_argv = (char **)ft_calloc(expansion_len + original_len + 1,
 			sizeof(char *));
 	ft_memcpy(new_argv, cmd->argv, current_arg * sizeof(char *));
 	ft_memcpy(&new_argv[matrix_len(new_argv)], expansion_args,
@@ -59,7 +61,9 @@ static int	arg_wildcard_parser(t_shell *msh, t_cmd *cmd, int current_arg)
 	free(cmd->argv);
 	free(expansion_args);
 	cmd->argv = new_argv;
-	return (matrix_len(new_argv));
+	if (matrix_len(new_argv) - original_len == 0)
+		return (1);
+	return (matrix_len(new_argv) - original_len);
 }
 
 void	cmd_wildcard_parser(t_shell *msh, t_cmd *new_cmd)
