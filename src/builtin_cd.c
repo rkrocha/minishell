@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
+/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 13:27:02 by dpiza             #+#    #+#             */
-/*   Updated: 2022/01/07 14:15:42 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/08 12:40:57 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*alloc_cwd(void)
 
 	size = 256;
 	buffer = malloc(size * sizeof(char));
-	while(!getcwd(buffer, size))
+	while (!getcwd(buffer, size))
 	{
 		size += 256;
 		free(buffer);
