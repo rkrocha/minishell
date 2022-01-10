@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 11:00:46 by dpiza             #+#    #+#             */
-/*   Updated: 2021/12/28 13:11:47 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/10 17:42:46 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ static char	*get_cmd_path(t_shell *msh, t_cmd *cmd)
 			cmd->return_value = throw_err(cmd->argv[0], -2);
 		else
 			return (ft_strdup(cmd->argv[0]));
+		return (NULL);
+	}
+	else if (ft_strncmp(*cmd->argv, ".", 2) == 0
+		|| ft_strncmp(*cmd->argv, "..", 3) == 0)
+	{
+		cmd->return_value = throw_err(cmd->argv[0], 0);
 		return (NULL);
 	}
 	cmd_path = get_path(msh, cmd);
