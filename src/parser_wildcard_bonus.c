@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 10:53:49 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/07 10:26:11 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/11 11:18:16 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ static char	**get_expansions(t_shell *msh, char *expansion)
 
 	folder = opendir(msh->pwd);
 	expansion_str = NULL;
-	if (!folder)
-		return (NULL);
-	ret = readdir(folder);
+	ret = NULL;
+	if (folder)
+		ret = readdir(folder);
 	while (ret)
 	{
 		if (is_valid_expansion(ret->d_name, expansion))
 			wildcard_expand(&expansion_str, ret->d_name, expansion);
 		ret = readdir(folder);
 	}
-	if (!expansion_str)
+	if (!expansion_str || !folder)
 		expansion_str = ft_strdup(expansion);
 	expansion_args = ft_split(expansion_str, '\30');
 	free(expansion_str);
@@ -49,6 +49,8 @@ static int	arg_wildcard_parser(t_shell *msh, t_cmd *cmd, int current_arg)
 
 	original_len = matrix_len(cmd->argv);
 	expansion_args = get_expansions(msh, cmd->argv[current_arg]);
+	if (!expansion_args)
+		printf("expansion_args é nulo\n");
 	expansion_len = matrix_len(expansion_args);
 	new_argv = (char **)ft_calloc(expansion_len + original_len + 1,
 			sizeof(char *));
