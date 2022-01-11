@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 14:18:10 by dpiza             #+#    #+#             */
-/*   Updated: 2022/01/03 11:54:13 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/11 11:00:32 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	save_var(t_shell *minishell, char *content)
 	if (var_index == minishell->env_size - 1)
 		env_realloc(minishell);
 	free(minishell->env[var_index]);
-	minishell->env[var_index] = ft_strdup(content);
+	minishell->env[var_index] = export_home_expand(minishell, content);
 	return (0);
 }
 

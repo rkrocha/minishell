@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:48 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/07 14:14:45 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/11 10:55:51 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int		msh_execve(t_shell *minishell, t_cmd *cmd);
 */
 void	cmd_parser(t_shell *minishell, char *cmd);
 void	cmd_home_expand(t_shell *minishell, t_cmd *cmd);
+char	*export_home_expand(t_shell *minishell, char *var);
 void	cmd_redirects_parser(t_cmd *cmd);
 void	cmd_quotes_parser(t_cmd *cmd);
 void	arg_quotes_parser(char *arg);
