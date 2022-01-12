@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 11:00:46 by dpiza             #+#    #+#             */
-/*   Updated: 2022/01/10 17:42:46 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/12 13:49:12 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static char	*get_path(t_shell *msh, t_cmd *cmd)
 	char	*cmd_path;
 	int		i;
 
+	cmd_path = NULL;
 	var_path = get_env(msh, "PATH");
 	path_list = ft_split(var_path, ':');
 	i = -1;
