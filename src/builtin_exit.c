@@ -6,7 +6,7 @@
 /*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:30:17 by dpiza             #+#    #+#             */
-/*   Updated: 2022/01/13 12:28:24 by dpiza            ###   ########.fr       */
+/*   Updated: 2022/01/13 14:10:02 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	numeric_argument(char *cmd)
 int	msh_exit(t_shell *minishell, t_cmd *cmd)
 {
 	ft_putendl("exit");
-	
 	if (cmd->argv[1] && numeric_argument(cmd->argv[1]) == -1)
 	{
 		ft_putstr("minishell: exit: ");
@@ -48,7 +47,7 @@ int	msh_exit(t_shell *minishell, t_cmd *cmd)
 	}
 	else if (cmd->argv[1] && numeric_argument(cmd->argv[1]) != -1)
 		cmd->return_value = numeric_argument(cmd->argv[1]);
-	else	
+	else
 		cmd->return_value = minishell->last_return;
 	minishell->end = TRUE;
 	return (cmd->return_value);
