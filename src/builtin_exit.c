@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: dpiza <dpiza@student.42sp.org.br>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 15:30:17 by dpiza             #+#    #+#             */
-/*   Updated: 2022/01/13 10:34:27 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/13 12:28:24 by dpiza            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,24 @@ static int	numeric_argument(char *cmd)
 int	msh_exit(t_shell *minishell, t_cmd *cmd)
 {
 	ft_putendl("exit");
-	if (cmd->argv[1])
+	
+	if (cmd->argv[1] && numeric_argument(cmd->argv[1]) == -1)
 	{
-		cmd->return_value = numeric_argument(cmd->argv[1]);
-		if (cmd->return_value == -1)
-		{
-			ft_putstr("minishell: exit: ");
-			ft_putstr(cmd->argv[1]);
-			ft_putendl(": numeric argument required");
-			cmd->return_value = 2;
-			minishell->end = TRUE;
-			return (cmd->return_value);
-		}
+		ft_putstr("minishell: exit: ");
+		ft_putstr(cmd->argv[1]);
+		ft_putendl(": numeric argument required");
+		cmd->return_value = 2;
 	}
-	else
-		cmd->return_value = minishell->last_return;
-	if (cmd->argc > 2)
+	else if (cmd->argc > 2)
 	{
 		ft_putendl("minishell: exit: too many arguments");
 		cmd->return_value = 1;
 		return (cmd->return_value);
 	}
+	else if (cmd->argv[1] && numeric_argument(cmd->argv[1]) != -1)
+		cmd->return_value = numeric_argument(cmd->argv[1]);
+	else	
+		cmd->return_value = minishell->last_return;
 	minishell->end = TRUE;
 	return (cmd->return_value);
 }
