@@ -6,7 +6,7 @@
 /*   By: rkochhan <rkochhan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:53:43 by rkochhan          #+#    #+#             */
-/*   Updated: 2022/01/06 13:22:01 by rkochhan         ###   ########.fr       */
+/*   Updated: 2022/01/13 15:07:46 by rkochhan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ static void	handle_cmd(t_shell *minishell)
 	get_prompt(minishell);
 	cmd_line = readline(minishell->prompt);
 	if (!cmd_line)
+	{
+		ft_putendl("exit");
 		free_and_exit(minishell, minishell->last_return);
+	}
 	if (!*cmd_line || !ft_strignore(cmd_line, BLANK_SPACES))
 	{
 		free(cmd_line);
