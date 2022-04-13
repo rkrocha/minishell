@@ -1,8 +1,6 @@
 <br/>
 <p align="center">
-  <a href="https://github.com/rkrocha/42cursus/blob/master/subjects/03.minishell.pdf">
-    <img src="https://github.com/rkrocha/42cursus/blob/master/badges/minishellm.png" alt="Logo" width="150" height="150">
-  </a>
+    <img src="https://github.com/rkrocha/42cursus/blob/main/badges/minishellm.png" alt="Logo" width="150" height="150">
 
   <h3 align="center">minishell</h3>
 
